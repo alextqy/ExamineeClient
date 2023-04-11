@@ -85,7 +85,7 @@ class Tools {
   // UDP 客户端
   Future<String> clentUDP(int port) async {
     RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind('0.0.0.0', port);
-    // rawDgramSocket.send(utf8.encode("hello,world!"), InternetAddress('0.0.0.0'), port);
+    // rawDgramSocket.send(utf8.encode('hello,world!'), InternetAddress('0.0.0.0'), port);
     await for (RawSocketEvent event in rawDgramSocket) {
       if (event == RawSocketEvent.read) {
         try {
@@ -104,7 +104,7 @@ class Tools {
   //   await for (RawSocketEvent event in rawDgramSocket) {
   //     if (event == RawSocketEvent.read) {
   //       // print(utf8.decode(rawDgramSocket.receive()!.data));
-  //       rawDgramSocket.send(utf8.encode("UDP Server:already received!"), InternetAddress.loopbackIPv4, 8082);
+  //       rawDgramSocket.send(utf8.encode('UDP Server:already received!'), InternetAddress.loopbackIPv4, 8082);
   //     }
   //   }
   // }

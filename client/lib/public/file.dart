@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_selector/file_selector.dart';
 import 'package:mime/mime.dart';
@@ -5,6 +6,19 @@ import 'package:mime/mime.dart';
 // ignore_for_file: unnecessary_this
 class FileHelper {
   final String tokenFileName = 'token';
+
+  bool createFile(String filePath) {
+    try {
+      if (filePath != '') {
+        File file = File(filePath);
+        file.createSync(recursive: true);
+        return true;
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
+  }
 
   // 文件写入
   bool writeFile(String fileName, String content) {
@@ -158,5 +172,40 @@ class FileHelper {
 
   Directory appRoot() {
     return Directory.current;
+  }
+
+  // 写入json文件
+  bool jsonWrite({String key = '', dynamic value = '', String savePath = 'config.json'}) {
+    if (key != '' && savePath != '') {
+      try {
+        File jsonFile = File(savePath);
+        if (!jsonFile.existsSync()) {
+          jsonFile.createSync(recursive: true);
+        }
+        // 读取文件
+        String jsonStr = jsonFile.readAsStringSync();
+        Map<String, dynamic> jsonStrMap = {};
+        if (jsonStr != '') {
+          jsonStrMap = jsonDecode(jsonStr);
+        }
+        jsonStrMap[key] = value;
+        jsonFile.writeAsStringSync(jsonEncode(jsonStrMap));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    return false;
+  }
+
+  // 读取json文件
+  String jsonRead({String key = '', String filePath = 'config.json'}) {
+    File jsonFile = File(filePath);
+    if (jsonFile.existsSync()) {
+      String jsonStr = jsonFile.readAsStringSync();
+      Map<String, dynamic> jsonContent = jsonDecode(jsonStr);
+      return jsonContent[key].toString();
+    }
+    return '';
   }
 }
