@@ -25,3 +25,16 @@ showAlertDialog(BuildContext context, {String memo = ''}) {
     },
   );
 }
+
+ScaffoldFeatureController showSnackBar(BuildContext context, {String content = ''}) {
+  return ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      backgroundColor: Colors.black,
+      content: Text(
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+        content,
+      ),
+      // action: SnackBarAction(label: 'Action', onPressed: () {}),
+    ),
+  );
+}

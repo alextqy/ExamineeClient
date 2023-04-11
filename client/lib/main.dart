@@ -3,28 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
 import 'package:client/Views/common/black_white.dart';
 import 'package:client/public/file.dart';
+import 'package:client/Views/common/show_alert_dialog.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
 
-void main() => runApp(const ExamApp());
-
-class ExamApp extends StatelessWidget {
-  const ExamApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    if (FileHelper().jsonRead(key: 'lang') == '') {
-      FileHelper().jsonWrite(key: 'lang', value: 'en');
-    }
-
-    return MaterialApp(
+void main() {
+  if (FileHelper().jsonRead(key: 'lang') == '') {
+    FileHelper().jsonWrite(key: 'lang', value: 'en');
+  }
+  runApp(
+    MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
         primarySwatch: black,
       ),
       home: const Scaffold(body: Entrance()),
-    );
-  }
+    ),
+  );
 }
 
 class Entrance extends StatefulWidget {
@@ -166,15 +161,13 @@ class EntranceState extends State<Entrance> {
       padding: const EdgeInsets.all(0),
       child: Column(
         children: [
+          selectLang(),
           const Expanded(child: SizedBox()),
           SizedBox(
             width: 300,
             child: Tooltip(
               decoration: const BoxDecoration(color: Colors.grey),
-              textStyle: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+              textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               message: Lang().enterToEnter,
               child: TextField(
                 controller: accountController,
@@ -193,6 +186,7 @@ class EntranceState extends State<Entrance> {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   hintText: Lang().account,
+                  hintStyle: const TextStyle(color: Colors.white),
                   suffixIconColor: Colors.white,
                   suffixIcon: IconButton(
                     iconSize: 20,
@@ -200,6 +194,10 @@ class EntranceState extends State<Entrance> {
                     icon: const Icon(Icons.clear),
                   ),
                 ),
+                onSubmitted: (value) {
+                  accountController.text;
+                  showSnackBar(context, content: 'error');
+                },
               ),
             ),
           ),
@@ -217,7 +215,6 @@ class EntranceState extends State<Entrance> {
             ],
           ),
           const Expanded(child: SizedBox()),
-          selectLang(),
         ],
       ),
     );
