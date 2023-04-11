@@ -1,67 +1,10 @@
-// import 'package:client/public/lang.dart';
-// import 'package:client/public/file.dart';
-// import 'package:client/udp_set.dart';
-
-/*
-
-void main() {
-  if (FileHelper().jsonRead(key: 'lang') == '') {
-    FileHelper().jsonWrite(key: 'lang', value: 'en');
-  }
-  runApp(
-    MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
-      home: const Scaffold(body: Entrance()),
-    ),
-  );
-}
-
-class Entrance extends StatefulWidget {
-  const Entrance({super.key});
-
-  @override
-  State<Entrance> createState() => EntranceState();
-}
-
-class EntranceState extends State<Entrance> {
-  int groupValue = 1;
-
-  void checkLang() {
-    if (FileHelper().jsonRead(key: 'lang') == 'en') {
-      setState(() {
-        groupValue = 1;
-      });
-    } else if (FileHelper().jsonRead(key: 'lang') == 'cn') {
-      setState(() {
-        groupValue = 2;
-      });
-    } else {
-      setState(() {
-        groupValue = 0;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: null);
-  }
-}
-
-*/
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
 import 'package:client/Views/common/black_white.dart';
+import 'package:client/public/file.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
-
-Map<Labelem, Color> labelColors = <Labelem, Color>{
-  Labelem.midgrey: const Color.fromARGB(255, 128, 128, 128),
-  Labelem.viridian: const Color.fromARGB(255, 64, 130, 109),
-  Labelem.cerulean: const Color.fromARGB(255, 0, 123, 167),
-};
 
 void main() => runApp(const ExamApp());
 
@@ -70,6 +13,10 @@ class ExamApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (FileHelper().jsonRead(key: 'lang') == '') {
+      FileHelper().jsonWrite(key: 'lang', value: 'en');
+    }
+
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -88,10 +35,71 @@ class Entrance extends StatefulWidget {
 }
 
 class EntranceState extends State<Entrance> {
+  Map<Labelem, Color> labelColors = <Labelem, Color>{
+    Labelem.midgrey: const Color.fromARGB(255, 128, 128, 128),
+    Labelem.viridian: const Color.fromARGB(255, 64, 130, 109),
+    Labelem.cerulean: const Color.fromARGB(255, 0, 123, 167),
+  };
+
   Labelem _selectedSegment = Labelem.viridian;
   String account = '';
   TextEditingController accountController = TextEditingController();
   String accountType = Lang().accountType;
+  int groupValue = 1;
+
+  void checkLang() {
+    if (FileHelper().jsonRead(key: 'lang') == 'en') {
+      setState(() {
+        groupValue = 1;
+      });
+    } else if (FileHelper().jsonRead(key: 'lang') == 'cn') {
+      setState(() {
+        groupValue = 2;
+      });
+    } else {
+      setState(() {
+        groupValue = 0;
+      });
+    }
+  }
+
+  Row selectLang() {
+    return Row(
+      children: [
+        const Expanded(child: SizedBox()),
+        const SizedBox(width: 80),
+        Radio(
+          activeColor: Colors.white,
+          value: 1,
+          groupValue: groupValue,
+          onChanged: (int? v) {
+            setState(() {
+              groupValue = v ?? 0;
+              FileHelper().jsonWrite(key: 'lang', value: 'en');
+              accountType = Lang().accountType;
+            });
+          },
+        ),
+        const Text('English', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        // const SizedBox(width: 20),
+        Radio(
+          activeColor: Colors.white,
+          value: 2,
+          groupValue: groupValue,
+          onChanged: (int? v) {
+            setState(() {
+              groupValue = v ?? 0;
+              FileHelper().jsonWrite(key: 'lang', value: 'cn');
+              accountType = Lang().accountType;
+            });
+          },
+        ),
+        const Text('中文', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        // const Expanded(child: SizedBox()),
+        const SizedBox(width: 10),
+      ],
+    );
+  }
 
   Widget body() {
     bool connectionTestShow = false;
@@ -209,6 +217,7 @@ class EntranceState extends State<Entrance> {
             ],
           ),
           const Expanded(child: SizedBox()),
+          selectLang(),
         ],
       ),
     );
@@ -256,9 +265,7 @@ class EntranceState extends State<Entrance> {
           },
         ),
       ),
-      child: Center(
-        child: body(),
-      ),
+      child: Center(child: body()),
     );
   }
 }

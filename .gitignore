@@ -69,3 +69,5 @@ client/app.*.map.json
 client/android/app/debug
 client/android/app/profile
 client/android/app/release
+
+client/config.json
