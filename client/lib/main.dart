@@ -195,8 +195,13 @@ class EntranceState extends State<Entrance> {
                   ),
                 ),
                 onSubmitted: (value) {
-                  accountController.text;
-                  showSnackBar(context, content: 'error');
+                  if (accountController.text.isNotEmpty) {
+                    if (accountType == Lang().accountType) {
+                      showSnackBar(context, content: Lang().unknownAccountType);
+                    } else {
+                      showSnackBar(context, content: 'error');
+                    }
+                  }
                 },
               ),
             ),

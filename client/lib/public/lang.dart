@@ -16,6 +16,7 @@ class Lang {
   String studentNumber = '';
   String admissionTicketNumber = '';
   String enterToEnter = '';
+  String unknownAccountType = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -33,6 +34,7 @@ class Lang {
       this.studentNumber = '学号';
       this.admissionTicketNumber = '准考证号';
       this.enterToEnter = '回车进入';
+      this.unknownAccountType = '未知账号类型';
     } else {
       this.title = title;
       this.connectionTest = 'Connection Test';
@@ -47,6 +49,7 @@ class Lang {
       this.studentNumber = 'Student Number';
       this.admissionTicketNumber = 'Admission Ticket Number';
       this.enterToEnter = 'Enter To Enter';
+      this.unknownAccountType = 'Unknown Account Type';
     }
   }
 }
