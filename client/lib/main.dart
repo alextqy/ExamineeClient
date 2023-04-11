@@ -163,61 +163,67 @@ class EntranceState extends State<Entrance> {
         children: [
           selectLang(),
           const Expanded(child: SizedBox()),
-          SizedBox(
-            width: 300,
-            child: Tooltip(
-              decoration: const BoxDecoration(color: Colors.grey),
-              textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-              message: Lang().enterToEnter,
-              child: TextField(
-                controller: accountController,
-                style: const TextStyle(fontSize: 18, color: Colors.white),
-                decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+          Visibility(
+            visible: examinationShow,
+            child: SizedBox(
+              width: 350,
+              child: Tooltip(
+                decoration: const BoxDecoration(color: Colors.grey),
+                textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                message: Lang().enterToEnter,
+                child: TextField(
+                  controller: accountController,
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  decoration: InputDecoration(
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.5),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red, width: 2.5),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    hintText: Lang().account,
+                    hintStyle: const TextStyle(color: Colors.white),
+                    suffixIconColor: Colors.white,
+                    suffixIcon: IconButton(
+                      iconSize: 20,
+                      onPressed: () => accountController.clear(),
+                      icon: const Icon(Icons.clear),
+                    ),
                   ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white, width: 2.5),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red, width: 2.5),
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  hintText: Lang().account,
-                  hintStyle: const TextStyle(color: Colors.white),
-                  suffixIconColor: Colors.white,
-                  suffixIcon: IconButton(
-                    iconSize: 20,
-                    onPressed: () => accountController.clear(),
-                    icon: const Icon(Icons.clear),
-                  ),
-                ),
-                onSubmitted: (value) {
-                  if (accountController.text.isNotEmpty) {
-                    if (accountType == Lang().accountType) {
-                      showSnackBar(context, content: Lang().unknownAccountType);
-                    } else {
-                      showSnackBar(context, content: 'error');
+                  onSubmitted: (value) {
+                    if (accountController.text.isNotEmpty) {
+                      if (accountType == Lang().accountType) {
+                        showSnackBar(context, content: Lang().unknownAccountType);
+                      } else {
+                        showSnackBar(context, content: 'error');
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               ),
             ),
           ),
-          Row(
-            children: [
-              const Expanded(child: SizedBox()),
-              CupertinoButton(
-                onPressed: () => showActionSheet(context),
-                child: Text(
-                  accountType,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+          Visibility(
+            visible: examinationShow,
+            child: Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                CupertinoButton(
+                  onPressed: () => showActionSheet(context),
+                  child: Text(
+                    accountType,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              const Expanded(child: SizedBox()),
-            ],
+                const Expanded(child: SizedBox()),
+              ],
+            ),
           ),
           const Expanded(child: SizedBox()),
         ],
@@ -227,6 +233,8 @@ class EntranceState extends State<Entrance> {
 
   @override
   Widget build(BuildContext context) {
+    checkLang();
+
     return CupertinoPageScaffold(
       backgroundColor: labelColors[_selectedSegment],
       navigationBar: CupertinoNavigationBar(
