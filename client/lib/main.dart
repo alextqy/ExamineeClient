@@ -188,7 +188,7 @@ class EntranceState extends State<Entrance> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     hintText: Lang().account,
-                    hintStyle: const TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     suffixIconColor: Colors.white,
                     suffixIcon: IconButton(
                       iconSize: 20,
@@ -221,6 +221,7 @@ class EntranceState extends State<Entrance> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
+                const Icon(Icons.arrow_forward_ios_outlined, size: 15),
                 const Expanded(child: SizedBox()),
               ],
             ),
