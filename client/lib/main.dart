@@ -4,6 +4,7 @@ import 'package:client/public/lang.dart';
 import 'package:client/Views/common/black_white.dart';
 import 'package:client/public/file.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
+import 'package:client/public/tools.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
 
@@ -39,6 +40,8 @@ class EntranceState extends State<Entrance> {
   Labelem _selectedSegment = Labelem.viridian;
   String account = '';
   TextEditingController accountController = TextEditingController();
+  TextEditingController studentNumberController = TextEditingController();
+  TextEditingController portController = TextEditingController();
   String accountType = Lang().accountType;
   int groupValue = 1;
 
@@ -97,6 +100,8 @@ class EntranceState extends State<Entrance> {
   }
 
   Widget body() {
+    portController.text = '50001';
+
     bool connectionTestShow = false;
     bool examinationShow = false;
     bool selfTestShow = false;
@@ -164,6 +169,30 @@ class EntranceState extends State<Entrance> {
           selectLang(),
           const Expanded(child: SizedBox()),
           Visibility(
+            visible: connectionTestShow,
+            child: SizedBox(
+              width: 300,
+              child: TextField(
+                controller: portController,
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          Visibility(visible: connectionTestShow, child: const SizedBox(height: 10)),
+          Visibility(
+            visible: connectionTestShow,
+            child: SizedBox(
+              width: 300,
+              child: CupertinoButton.filled(
+                padding: const EdgeInsets.all(10),
+                child: Text(Lang().serverCommunicationTest, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                onPressed: () {
+                  Tools().socketListen(context, int.parse(portController.text), 4);
+                },
+              ),
+            ),
+          ),
+          Visibility(
             visible: examinationShow,
             child: SizedBox(
               width: 350,
@@ -181,10 +210,6 @@ class EntranceState extends State<Entrance> {
                     ),
                     focusedBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 2.5),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    focusedErrorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 2.5),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     hintText: Lang().account,
@@ -224,6 +249,48 @@ class EntranceState extends State<Entrance> {
                 const Icon(Icons.arrow_forward_ios_outlined, size: 15),
                 const Expanded(child: SizedBox()),
               ],
+            ),
+          ),
+          Visibility(
+            visible: selfTestShow,
+            child: SizedBox(
+              width: 350,
+              child: Tooltip(
+                decoration: const BoxDecoration(color: Colors.grey),
+                textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                message: Lang().enterToEnter,
+                child: TextField(
+                  controller: studentNumberController,
+                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  decoration: InputDecoration(
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2.5),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    hintText: Lang().studentNumber,
+                    hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    suffixIconColor: Colors.white,
+                    suffixIcon: IconButton(
+                      iconSize: 20,
+                      onPressed: () => studentNumberController.clear(),
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                  onSubmitted: (value) {
+                    if (accountController.text.isNotEmpty) {
+                      if (accountType == Lang().accountType) {
+                        showSnackBar(context, content: Lang().unknownAccountType);
+                      } else {
+                        showSnackBar(context, content: 'error');
+                      }
+                    }
+                  },
+                ),
+              ),
             ),
           ),
           const Expanded(child: SizedBox()),

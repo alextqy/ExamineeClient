@@ -1,7 +1,10 @@
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:client/Views/common/show_alert_dialog.dart';
+import 'package:client/public/lang.dart';
 import 'package:crypto/crypto.dart' as crypto;
+import 'package:flutter/material.dart';
 
 class Tools {
   // 当前时间戳
@@ -96,6 +99,24 @@ class Tools {
       }
     }
     return '';
+  }
+
+  Future<void> socketListen(BuildContext context, int port, int s) async {
+    Duration timeoutDuration = Duration(milliseconds: s * 1000);
+    RawDatagramSocket rawDgramSocket = await RawDatagramSocket.bind('0.0.0.0', port);
+    rawDgramSocket.timeout(timeoutDuration, onTimeout: ((sink) {
+      showSnackBar(context, content: Lang().requestTimedOut);
+      rawDgramSocket.close();
+    })).listen((event) async {
+      if (event == RawSocketEvent.read) {
+        try {
+          showSnackBar(context, content: utf8.decode(rawDgramSocket.receive()!.data));
+        } catch (e) {
+          showSnackBar(context, content: e.toString());
+        }
+        rawDgramSocket.close();
+      }
+    });
   }
 
   // UDP 服务端 (待测)

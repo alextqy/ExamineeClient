@@ -5,6 +5,7 @@ class Lang {
   String type = '';
   String title = '';
   String connectionTest = '';
+  String serverCommunicationTest = '';
   String examination = '';
   String selfTest = '';
   String account = '';
@@ -17,12 +18,14 @@ class Lang {
   String admissionTicketNumber = '';
   String enterToEnter = '';
   String unknownAccountType = '';
+  String requestTimedOut = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
     if (this.type == 'cn') {
       this.title = title;
       this.connectionTest = '连接测试';
+      this.serverCommunicationTest = '服务器通讯测试';
       this.examination = '考试';
       this.selfTest = '自测';
       this.account = '账号';
@@ -35,9 +38,11 @@ class Lang {
       this.admissionTicketNumber = '准考证号';
       this.enterToEnter = '回车进入';
       this.unknownAccountType = '未知账号类型';
+      this.requestTimedOut = '请求超时';
     } else {
       this.title = title;
       this.connectionTest = 'Connection Test';
+      this.serverCommunicationTest = 'Server Communication Test';
       this.examination = 'Examination';
       this.selfTest = 'Self-test';
       this.account = 'account';
@@ -50,6 +55,7 @@ class Lang {
       this.admissionTicketNumber = 'Admission Ticket Number';
       this.enterToEnter = 'Enter To Enter';
       this.unknownAccountType = 'Unknown Account Type';
+      this.requestTimedOut = 'Request Timed Out';
     }
   }
 }
