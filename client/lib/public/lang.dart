@@ -3,6 +3,7 @@ import 'package:client/public/file.dart';
 
 class Lang {
   String type = '';
+  String none = '';
   String title = '';
   String connectionTest = '';
   String serverCommunicationTest = '';
@@ -21,10 +22,16 @@ class Lang {
   String requestTimedOut = '';
   String loading = '';
   String theOperationCompletes = '';
+  String noRegistrationDataAvailable = '';
+  String examSubjects = '';
+  String examDuration = '';
+  String passLine = '';
+  String selectTheSubject = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
     if (this.type == 'cn') {
+      this.none = '';
       this.title = title;
       this.connectionTest = '连接测试';
       this.serverCommunicationTest = '服务器通讯测试';
@@ -43,7 +50,13 @@ class Lang {
       this.requestTimedOut = '请求超时';
       this.loading = '加载中';
       this.theOperationCompletes = '操作完成';
+      this.noRegistrationDataAvailable = '暂无报名数据';
+      this.examSubjects = '考试科目';
+      this.examDuration = '考试时长';
+      this.passLine = '及格线';
+      this.selectTheSubject = '选择该科目';
     } else {
+      this.none = '';
       this.title = title;
       this.connectionTest = 'Connection Test';
       this.serverCommunicationTest = 'Server Communication Test';
@@ -62,6 +75,11 @@ class Lang {
       this.requestTimedOut = 'Request Timed Out';
       this.loading = 'Loading';
       this.theOperationCompletes = 'Completed';
+      this.noRegistrationDataAvailable = 'No Registration Data Available';
+      this.examSubjects = 'Exam Subjects';
+      this.examDuration = 'Exam Duration';
+      this.passLine = 'Pass Line';
+      this.selectTheSubject = 'Select The Subject';
     }
   }
 }

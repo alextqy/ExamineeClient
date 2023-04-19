@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:client/models/examinfo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
@@ -11,6 +10,9 @@ import 'package:client/public/tools.dart';
 
 import 'package:client/providers/base_notifier.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
+
+import 'package:client/Views/common/basic_info.dart';
+import 'package:client/models/examinfo_model.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
 
@@ -255,15 +257,21 @@ class EntranceState extends State<Entrance> {
                   onSubmitted: (value) {
                     if (accountController.text.isNotEmpty) {
                       if (accountType != Lang().accountType) {
+                        showSnackBar(context, content: Lang().loading);
                         Tools().clentUDP(int.parse(portController.text)).then((value) {
                           if (value.isNotEmpty) {
-                            showSnackBar(context, content: Lang().loading);
                             FileHelper().writeFileAsync('ServerAddress', value).then((value) {
                               if (value == true) {
                                 if (accountType == Lang().studentNumber) {
                                   examineeTokenNotifier.signInStudentID(account: accountController.text).then((value) {
                                     if (value.state) {
                                       examineeTokenNotifier.examInfoListModel = ExamInfoModel().fromJsonList(jsonEncode(value.data));
+                                      if (examineeTokenNotifier.examInfoListModel.isNotEmpty) {
+                                        // print(examineeTokenNotifier.examInfoListModel.length);
+                                        examInfoListAlertDialog(context);
+                                      } else {
+                                        showSnackBar(context, content: Lang().noRegistrationDataAvailable);
+                                      }
                                     } else {
                                       showSnackBar(context, content: value.memo);
                                     }
@@ -338,7 +346,7 @@ class EntranceState extends State<Entrance> {
                       if (accountType == Lang().accountType) {
                         showSnackBar(context, content: Lang().unknownAccountType);
                       } else {
-                        showSnackBar(context, content: 'error');
+                        showSnackBar(context, content: 'Error');
                       }
                     }
                   },
@@ -349,6 +357,81 @@ class EntranceState extends State<Entrance> {
           const Expanded(child: SizedBox()),
         ],
       ),
+    );
+  }
+
+  List<TableRow> examInfoTableRow() {
+    List<TableRow> tableRowList = [];
+    tableRowList.add(
+      TableRow(
+        children: <Widget>[
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().examSubjects))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().examDuration))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().passLine))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().admissionTicketNumber))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().none))),
+        ],
+      ),
+    );
+    for (var element in examineeTokenNotifier.examInfoListModel) {
+      tableRowList.add(
+        TableRow(
+          children: <Widget>[
+            Tooltip(message: element.subjectName, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.subjectName)))),
+            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.examDuration.toString()))),
+            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.passLine.toString()))),
+            Tooltip(message: element.examNo, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.examNo)))),
+            Tooltip(
+              message: Lang().selectTheSubject,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: IconButton(
+                    iconSize: 15,
+                    icon: const Icon(Icons.arrow_back_ios_new),
+                    onPressed: () {
+                      print(element.id);
+                    },
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    return tableRowList;
+  }
+
+  void examInfoListAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, Function state) {
+            return AlertDialog(
+              title: Text(Lang().title),
+              content: SizedBox(
+                height: 350,
+                child: scrollbarWidget(
+                  Table(
+                    columnWidths: const <int, TableColumnWidth>{
+                      0: FixedColumnWidth(300.0),
+                      1: FixedColumnWidth(160.0),
+                      2: FixedColumnWidth(160.0),
+                      3: FixedColumnWidth(300.0),
+                      4: FixedColumnWidth(50.0),
+                    },
+                    border: TableBorder.all(color: Colors.white, width: 1.0, style: BorderStyle.solid),
+                    children: examInfoTableRow(),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
