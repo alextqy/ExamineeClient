@@ -16,7 +16,7 @@ class ScantronModel extends BaseModel {
   late int examID;
   late String headlineContent;
   late int right;
-  late bool selected;
+  // late bool selected;
 
   ScantronModel({
     int id = 0,
@@ -33,7 +33,7 @@ class ScantronModel extends BaseModel {
     this.examID = 0,
     this.headlineContent = '',
     this.right = 0,
-    this.selected = false,
+    // this.selected = false,
   }) : super(id, createTime);
 
   factory ScantronModel.fromJson(Map<String, dynamic> json) {

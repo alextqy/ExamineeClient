@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:client/models/examinfo_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
@@ -5,6 +8,9 @@ import 'package:client/Views/common/black_white.dart';
 import 'package:client/public/file.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
 import 'package:client/public/tools.dart';
+
+import 'package:client/providers/base_notifier.dart';
+import 'package:client/providers/examinee_token_notifier.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
 
@@ -31,6 +37,8 @@ class Entrance extends StatefulWidget {
 }
 
 class EntranceState extends State<Entrance> {
+  ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+
   Map<Labelem, Color> labelColors = <Labelem, Color>{
     Labelem.midgrey: const Color.fromARGB(255, 128, 128, 128),
     Labelem.viridian: const Color.fromARGB(255, 64, 130, 109),
@@ -44,6 +52,29 @@ class EntranceState extends State<Entrance> {
   TextEditingController portController = TextEditingController();
   String accountType = Lang().accountType;
   int groupValue = 1;
+
+  basicListener() async {
+    if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
+      showSnackBar(context, content: Lang().loading);
+    } else if (examineeTokenNotifier.operationStatus.value == OperationStatus.success) {
+      showSnackBar(context, content: Lang().theOperationCompletes);
+    } else {
+      showSnackBar(context, content: examineeTokenNotifier.operationMemo);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    examineeTokenNotifier.addListener(basicListener);
+  }
+
+  @override
+  void dispose() {
+    examineeTokenNotifier.dispose();
+    examineeTokenNotifier.removeListener(basicListener);
+    super.dispose();
+  }
 
   void checkLang() {
     if (FileHelper().jsonRead(key: 'lang') == 'en') {
@@ -223,10 +254,32 @@ class EntranceState extends State<Entrance> {
                   ),
                   onSubmitted: (value) {
                     if (accountController.text.isNotEmpty) {
-                      if (accountType == Lang().accountType) {
-                        showSnackBar(context, content: Lang().unknownAccountType);
+                      if (accountType != Lang().accountType) {
+                        Tools().clentUDP(int.parse(portController.text)).then((value) {
+                          if (value.isNotEmpty) {
+                            showSnackBar(context, content: Lang().loading);
+                            FileHelper().writeFileAsync('ServerAddress', value).then((value) {
+                              if (value == true) {
+                                if (accountType == Lang().studentNumber) {
+                                  examineeTokenNotifier.signInStudentID(account: accountController.text).then((value) {
+                                    if (value.state) {
+                                      examineeTokenNotifier.examInfoListModel = ExamInfoModel().fromJsonList(jsonEncode(value.data));
+                                    } else {
+                                      showSnackBar(context, content: value.memo);
+                                    }
+                                  });
+                                }
+                                if (accountType == Lang().admissionTicketNumber) {
+                                  examineeTokenNotifier.signInAdmissionTicket(examNo: accountController.text);
+                                }
+                              }
+                            });
+                          } else {
+                            showSnackBar(context, content: Lang().theRequestFailed);
+                          }
+                        });
                       } else {
-                        showSnackBar(context, content: 'error');
+                        showSnackBar(context, content: Lang().unknownAccountType);
                       }
                     }
                   },

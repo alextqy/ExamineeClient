@@ -20,7 +20,7 @@ class ExamInfoModel extends BaseModel {
   late int examType;
   late int startState;
   late int suspendedState;
-  late bool selected;
+  // late bool selected;
 
   ExamInfoModel({
     int id = 0,
@@ -41,7 +41,7 @@ class ExamInfoModel extends BaseModel {
     this.examType = 0,
     this.startState = 0,
     this.suspendedState = 0,
-    this.selected = false,
+    // this.selected = false,
   }) : super(id, createTime);
 
   factory ExamInfoModel.fromJson(Map<String, dynamic> json) {

@@ -71,3 +71,4 @@ client/android/app/profile
 client/android/app/release
 
 client/config.json
+client/ServerAddress

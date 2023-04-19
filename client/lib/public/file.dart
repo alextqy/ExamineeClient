@@ -31,6 +31,16 @@ class FileHelper {
     return true;
   }
 
+  Future<bool> writeFileAsync(String fileName, String content) async {
+    File file = File(fileName);
+    try {
+      file.writeAsStringSync(content);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
   bool writeFileB(String fileName, List<int> content) {
     File file = File(fileName);
     try {

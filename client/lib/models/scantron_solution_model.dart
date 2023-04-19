@@ -13,7 +13,7 @@ class ScantronSolutionModel extends BaseModel {
   late int position;
   late int updateTime;
   late String candidateAnswer;
-  late bool selected;
+  // late bool selected;
 
   ScantronSolutionModel({
     int id = 0,
@@ -27,7 +27,7 @@ class ScantronSolutionModel extends BaseModel {
     this.position = 0,
     this.updateTime = 0,
     this.candidateAnswer = '',
-    this.selected = false,
+    // this.selected = false,
   }) : super(id, createTime);
 
   factory ScantronSolutionModel.fromJson(Map<String, dynamic> json) {

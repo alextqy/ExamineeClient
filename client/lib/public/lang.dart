@@ -19,6 +19,8 @@ class Lang {
   String enterToEnter = '';
   String unknownAccountType = '';
   String requestTimedOut = '';
+  String loading = '';
+  String theOperationCompletes = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -39,6 +41,8 @@ class Lang {
       this.enterToEnter = '回车进入';
       this.unknownAccountType = '未知账号类型';
       this.requestTimedOut = '请求超时';
+      this.loading = '加载中';
+      this.theOperationCompletes = '操作完成';
     } else {
       this.title = title;
       this.connectionTest = 'Connection Test';
@@ -56,6 +60,8 @@ class Lang {
       this.enterToEnter = 'Enter To Enter';
       this.unknownAccountType = 'Unknown Account Type';
       this.requestTimedOut = 'Request Timed Out';
+      this.loading = 'Loading';
+      this.theOperationCompletes = 'Completed';
     }
   }
 }
