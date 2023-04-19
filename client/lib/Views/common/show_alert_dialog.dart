@@ -9,14 +9,14 @@ showAlertDialog(BuildContext context, {String memo = ''}) {
       return StatefulBuilder(
         builder: (BuildContext context, Function state) {
           return AlertDialog(
-            title: Text(Lang().title),
-            content: Text(memo),
+            title: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().title),
+            content: Text(style: const TextStyle(fontWeight: FontWeight.bold), memo),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(Lang().cancel),
+                child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
               ),
             ],
           );

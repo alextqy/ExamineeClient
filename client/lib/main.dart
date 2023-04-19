@@ -365,11 +365,11 @@ class EntranceState extends State<Entrance> {
     tableRowList.add(
       TableRow(
         children: <Widget>[
-          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().examSubjects))),
-          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().examDuration))),
-          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().passLine))),
-          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().admissionTicketNumber))),
-          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, Lang().none))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, Lang().examSubjects))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, Lang().examDuration))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, Lang().passLine))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, Lang().admissionTicketNumber))),
+          Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, Lang().none))),
         ],
       ),
     );
@@ -377,10 +377,10 @@ class EntranceState extends State<Entrance> {
       tableRowList.add(
         TableRow(
           children: <Widget>[
-            Tooltip(message: element.subjectName, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.subjectName)))),
-            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.examDuration.toString()))),
-            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.passLine.toString()))),
-            Tooltip(message: element.examNo, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(maxLines: 1, overflow: TextOverflow.ellipsis, element.examNo)))),
+            Tooltip(message: element.subjectName, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, element.subjectName)))),
+            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, element.examDuration.toString()))),
+            Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, element.passLine.toString()))),
+            Tooltip(message: element.examNo, child: Center(child: Padding(padding: const EdgeInsets.all(10), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis, element.examNo)))),
             Tooltip(
               message: Lang().selectTheSubject,
               child: Center(
@@ -390,7 +390,40 @@ class EntranceState extends State<Entrance> {
                     iconSize: 15,
                     icon: const Icon(Icons.arrow_back_ios_new),
                     onPressed: () {
-                      print(element.id);
+                      Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none),
+                            content: Column(
+                              children: <Widget>[
+                                const SizedBox(height: 10),
+                                Align(
+                                    alignment: const Alignment(0, 0),
+                                    child: Text(
+                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                                      '${Lang().startExam} ?',
+                                    )),
+                              ],
+                            ),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
+                                onPressed: () {
+                                  print(element.id);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
@@ -411,7 +444,7 @@ class EntranceState extends State<Entrance> {
         return StatefulBuilder(
           builder: (BuildContext context, Function state) {
             return AlertDialog(
-              title: Text(Lang().title),
+              title: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().title),
               content: SizedBox(
                 height: 350,
                 child: scrollbarWidget(

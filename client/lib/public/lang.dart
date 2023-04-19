@@ -13,6 +13,7 @@ class Lang {
   String incorrectInput = '';
   String theRequestFailed = '';
   String cancel = '';
+  String confirm = '';
   String accountType = '';
   String pleaseSelect = '';
   String studentNumber = '';
@@ -27,6 +28,7 @@ class Lang {
   String examDuration = '';
   String passLine = '';
   String selectTheSubject = '';
+  String startExam = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -41,6 +43,7 @@ class Lang {
       this.incorrectInput = '输入错误';
       this.theRequestFailed = '请求失败';
       this.cancel = '取消';
+      this.confirm = '确认';
       this.accountType = '账号类型';
       this.pleaseSelect = '请选择';
       this.studentNumber = '学号';
@@ -55,6 +58,7 @@ class Lang {
       this.examDuration = '考试时长';
       this.passLine = '及格线';
       this.selectTheSubject = '选择该科目';
+      this.startExam = '开始考试';
     } else {
       this.none = '';
       this.title = title;
@@ -62,10 +66,11 @@ class Lang {
       this.serverCommunicationTest = 'Server Communication Test';
       this.examination = 'Examination';
       this.selfTest = 'Self-test';
-      this.account = 'account';
+      this.account = 'Account';
       this.incorrectInput = 'Incorrect Input';
       this.theRequestFailed = 'The Request Failed';
-      this.cancel = 'cancel';
+      this.cancel = 'Cancel';
+      this.confirm = 'Confirm';
       this.accountType = 'Account Type';
       this.pleaseSelect = 'Please Select';
       this.studentNumber = 'Student Number';
@@ -80,6 +85,7 @@ class Lang {
       this.examDuration = 'Exam Duration';
       this.passLine = 'Pass Line';
       this.selectTheSubject = 'Select The Subject';
+      this.startExam = 'Start Exam';
     }
   }
 }

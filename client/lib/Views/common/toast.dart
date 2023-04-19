@@ -26,7 +26,7 @@ Widget customToastContent(String message, {double textSize = 14, Color textColor
         padding: EdgeInsets.only(left: message.isEmpty ? 0 : 10),
         child: Text(
           message,
-          style: TextStyle(fontSize: textSize, color: textColor),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: textSize, color: textColor),
         ),
       ))
     ],
@@ -70,10 +70,7 @@ class Toast {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: Text(
                       message,
-                      style: TextStyle(
-                        fontSize: textSize,
-                        color: textColor,
-                      ),
+                      style: TextStyle(fontSize: textSize, color: textColor, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
