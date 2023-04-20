@@ -12,6 +12,8 @@ import 'package:client/providers/base_notifier.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
 
 import 'package:client/Views/common/basic_info.dart';
+import 'package:client/Views/examination/test_paper.dart';
+
 import 'package:client/models/examinfo_model.dart';
 
 enum Labelem { midgrey, viridian, cerulean }
@@ -61,7 +63,10 @@ class EntranceState extends State<Entrance> {
         if (!FileHelper().writeFile(FileHelper().tokenFileName, result.data as String)) {
           showSnackBar(context, content: Lang().loginFailed);
         } else {
-          print(result.data);
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TestPaper()));
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => const TestPaper()), (Route<dynamic> route) {
+            return route.isFirst;
+          });
         }
       } else {
         showSnackBar(context, content: Lang().theRequestFailed);
