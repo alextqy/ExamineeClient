@@ -12,26 +12,11 @@ class ExamineeTokenNotifier extends BaseNotifier {
     return await examineeTokenApi.signInStudentID(account: account);
   }
 
-  void signInAdmissionTicket({
+  Future<DataModel> signInAdmissionTicket({
     required String examNo,
   }) async {
     operationStatus.value = OperationStatus.loading;
-    try {
-      result = await examineeTokenApi.signInAdmissionTicket(
-        examNo: examNo,
-      );
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationStatus.value = OperationStatus.failure;
-        operationMemo = result.memo;
-      }
-    } catch (e) {
-      operationStatus.value = OperationStatus.failure;
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await examineeTokenApi.signInAdmissionTicket(examNo: examNo);
   }
 
   Future<DataListModel> examScantronList() async {

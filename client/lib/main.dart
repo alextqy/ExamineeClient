@@ -55,6 +55,20 @@ class EntranceState extends State<Entrance> {
   String accountType = Lang().accountType;
   int groupValue = 1;
 
+  doExam(String examNo) {
+    examineeTokenNotifier.signInAdmissionTicket(examNo: examNo).then((result) {
+      if (result.state) {
+        if (!FileHelper().writeFile(FileHelper().tokenFileName, result.data as String)) {
+          showSnackBar(context, content: Lang().loginFailed);
+        } else {
+          print(result.data);
+        }
+      } else {
+        showSnackBar(context, content: Lang().theRequestFailed);
+      }
+    });
+  }
+
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
       showSnackBar(context, content: Lang().loading);
@@ -278,7 +292,36 @@ class EntranceState extends State<Entrance> {
                                   });
                                 }
                                 if (accountType == Lang().admissionTicketNumber) {
-                                  examineeTokenNotifier.signInAdmissionTicket(examNo: accountController.text);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CupertinoAlertDialog(
+                                        title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?'),
+                                        content: const Column(
+                                          children: <Widget>[
+                                            // const SizedBox(height: 10),
+                                            // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
+                                          ],
+                                        ),
+                                        actions: <Widget>[
+                                          CupertinoDialogAction(
+                                            isDestructiveAction: false,
+                                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          CupertinoDialogAction(
+                                            isDestructiveAction: true,
+                                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
+                                            onPressed: () {
+                                              doExam(accountController.text);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               }
                             });
@@ -414,7 +457,7 @@ class EntranceState extends State<Entrance> {
                                 isDestructiveAction: true,
                                 child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
                                 onPressed: () {
-                                  print(element.id);
+                                  doExam(element.examNo);
                                 },
                               ),
                             ],

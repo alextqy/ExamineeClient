@@ -72,3 +72,4 @@ client/android/app/release
 
 client/config.json
 client/ServerAddress
+client/token
