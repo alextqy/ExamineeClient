@@ -395,15 +395,16 @@ class EntranceState extends State<Entrance> {
                         context: context,
                         builder: (BuildContext context) {
                           return CupertinoAlertDialog(
-                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold), '${Lang().title}\n'),
-                            content: Column(
+                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?'),
+                            content: const Column(
                               children: <Widget>[
-                                const SizedBox(height: 10),
-                                Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?')),
+                                // const SizedBox(height: 10),
+                                // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
                               ],
                             ),
                             actions: <Widget>[
                               CupertinoDialogAction(
+                                isDestructiveAction: false,
                                 child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
                                 onPressed: () {
                                   Navigator.pop(context);
