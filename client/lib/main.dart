@@ -395,16 +395,11 @@ class EntranceState extends State<Entrance> {
                         context: context,
                         builder: (BuildContext context) {
                           return CupertinoAlertDialog(
-                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none),
+                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold), '${Lang().title}\n'),
                             content: Column(
                               children: <Widget>[
                                 const SizedBox(height: 10),
-                                Align(
-                                    alignment: const Alignment(0, 0),
-                                    child: Text(
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                                      '${Lang().startExam} ?',
-                                    )),
+                                Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?')),
                               ],
                             ),
                             actions: <Widget>[
@@ -415,6 +410,7 @@ class EntranceState extends State<Entrance> {
                                 },
                               ),
                               CupertinoDialogAction(
+                                isDestructiveAction: true,
                                 child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
                                 onPressed: () {
                                   print(element.id);
