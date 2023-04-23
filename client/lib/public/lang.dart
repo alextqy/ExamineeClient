@@ -30,6 +30,7 @@ class Lang {
   String selectTheSubject = '';
   String startExam = '';
   String loginFailed = '';
+  String testQuestions = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -61,6 +62,7 @@ class Lang {
       this.selectTheSubject = '选择该科目';
       this.startExam = '开始考试';
       this.loginFailed = '登录失败';
+      this.testQuestions = '试题';
     } else {
       this.none = '';
       this.title = title;
@@ -89,6 +91,7 @@ class Lang {
       this.selectTheSubject = 'Select The Subject';
       this.startExam = 'Start Exam';
       this.loginFailed = 'Login Failed';
+      this.testQuestions = 'Test Questions';
     }
   }
 }

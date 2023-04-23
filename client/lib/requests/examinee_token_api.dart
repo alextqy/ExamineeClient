@@ -5,7 +5,6 @@ import 'package:http/http.dart';
 import 'package:client/public/file.dart';
 import 'package:client/requests/base.dart';
 import 'package:client/models/data.dart';
-import 'package:client/models/data_list.dart';
 
 class ExamineeTokenApi extends ResponseHelper {
   Future<DataModel> signInStudentID({
@@ -36,7 +35,7 @@ class ExamineeTokenApi extends ResponseHelper {
     return DataModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
-  Future<DataListModel> examScantronList() async {
+  Future<DataModel> examScantronList() async {
     Response response = await post(
       Uri.http(url, '/Exam/Scantron/List'),
       body: {
@@ -45,7 +44,7 @@ class ExamineeTokenApi extends ResponseHelper {
       headers: postHeaders,
       encoding: postEncoding,
     );
-    return DataListModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+    return DataModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
   Future<DataModel> examScantronSolutionInfo({

@@ -2,7 +2,6 @@
 
 import 'package:client/models/data.dart';
 import 'package:client/providers/base_notifier.dart';
-import 'package:client/models/data_list.dart';
 
 class ExamineeTokenNotifier extends BaseNotifier {
   Future<DataModel> signInStudentID({
@@ -19,7 +18,7 @@ class ExamineeTokenNotifier extends BaseNotifier {
     return await examineeTokenApi.signInAdmissionTicket(examNo: examNo);
   }
 
-  Future<DataListModel> examScantronList() async {
+  Future<DataModel> examScantronList() async {
     return await examineeTokenApi.examScantronList();
   }
 

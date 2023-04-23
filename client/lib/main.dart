@@ -246,6 +246,23 @@ class EntranceState extends State<Entrance> {
           ),
           Visibility(
             visible: examinationShow,
+            child: Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                CupertinoButton(
+                  onPressed: () => showActionSheet(context),
+                  child: Text(
+                    accountType,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const Icon(Icons.arrow_forward_ios_outlined, size: 15),
+                const Expanded(child: SizedBox()),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: examinationShow,
             child: SizedBox(
               width: 350,
               child: Tooltip(
@@ -344,23 +361,6 @@ class EntranceState extends State<Entrance> {
             ),
           ),
           Visibility(
-            visible: examinationShow,
-            child: Row(
-              children: [
-                const Expanded(child: SizedBox()),
-                CupertinoButton(
-                  onPressed: () => showActionSheet(context),
-                  child: Text(
-                    accountType,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const Icon(Icons.arrow_forward_ios_outlined, size: 15),
-                const Expanded(child: SizedBox()),
-              ],
-            ),
-          ),
-          Visibility(
             visible: selfTestShow,
             child: SizedBox(
               width: 350,
@@ -421,7 +421,7 @@ class EntranceState extends State<Entrance> {
         ],
       ),
     );
-    for (var element in examineeTokenNotifier.examInfoListModel) {
+    for (ExamInfoModel element in examineeTokenNotifier.examInfoListModel) {
       tableRowList.add(
         TableRow(
           children: <Widget>[
