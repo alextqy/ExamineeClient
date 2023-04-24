@@ -304,7 +304,7 @@ class EntranceState extends State<Entrance> {
                 message: Lang().broadcastPort,
                 child: TextField(
                   controller: portController,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
@@ -333,7 +333,7 @@ class EntranceState extends State<Entrance> {
                 message: Lang().enterToEnter,
                 child: TextField(
                   controller: accountController,
-                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 1),
@@ -400,7 +400,7 @@ class EntranceState extends State<Entrance> {
                 message: Lang().enterToEnter,
                 child: TextField(
                   controller: studentNumberController,
-                  style: const TextStyle(fontSize: 18, color: Colors.white),
+                  style: const TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     enabledBorder: const OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white, width: 1),
@@ -521,14 +521,14 @@ class EntranceState extends State<Entrance> {
             return AlertDialog(
               title: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().title),
               content: SizedBox(
-                height: 350,
+                height: 300,
                 child: scrollbarWidget(
                   Table(
                     columnWidths: const <int, TableColumnWidth>{
                       0: FixedColumnWidth(300.0),
                       1: FixedColumnWidth(160.0),
                       2: FixedColumnWidth(160.0),
-                      3: FixedColumnWidth(300.0),
+                      3: FixedColumnWidth(350.0),
                       4: FixedColumnWidth(50.0),
                     },
                     border: TableBorder.all(color: Colors.white, width: 1.0, style: BorderStyle.solid),

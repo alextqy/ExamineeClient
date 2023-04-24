@@ -42,29 +42,37 @@ class TestPaperState extends State<TestPaper> {
     });
   }
 
-  List<ListTile> generateList() {
-    List<ListTile> scantronListTile = [];
+  List<Container> generateList() {
+    List<Container> scantronListTile = [];
     for (ScantronModel element in examineeTokenNotifier.scantronListModel) {
+      Widget frontWidget = element.headlineContent == 'none' ? const SizedBox(width: 10) : const Expanded(child: SizedBox());
+      double titleIconSize = element.headlineContent == 'none' ? 15 : 0;
+      double titleIconSpace = element.headlineContent == 'none' ? 20 : 0;
       String title = element.headlineContent == 'none' ? element.questionTitle : element.headlineContent;
       double titleFontSize = element.headlineContent == 'none' ? 15 : 20;
       TextAlign textAlign = element.headlineContent == 'none' ? TextAlign.left : TextAlign.center;
-      bool enabledItem = element.headlineContent == 'none' ? true : true;
       Color textColor = element.headlineContent == 'none' ? Colors.white : Colors.grey;
       scantronListTile.add(
-        ListTile(
-          enabled: enabledItem,
-          title: Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: textAlign,
-            style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: titleFontSize),
+        Container(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              frontWidget,
+              Icon(Icons.radio_button_unchecked_outlined, size: titleIconSize),
+              SizedBox(width: titleIconSpace),
+              InkWell(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: textAlign,
+                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: titleFontSize),
+                ),
+                onTap: () => print(element.id),
+              ),
+              const Expanded(child: SizedBox()),
+            ],
           ),
-          onTap: () {
-            if (enabledItem) {
-              print(element.id);
-            }
-          },
         ),
       );
     }
@@ -87,7 +95,7 @@ class TestPaperState extends State<TestPaper> {
 
   Drawer questions(BuildContext context) {
     return Drawer(
-      width: 350,
+      width: 280,
       child: Column(
         children: [
           const SizedBox(height: 10),
