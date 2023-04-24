@@ -299,6 +299,7 @@ class EntranceState extends State<Entrance> {
               child: Tooltip(
                 // decoration: const BoxDecoration(color: Colors.grey),
                 // textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                 message: Lang().broadcastPort,
                 child: TextField(
                   controller: portController,
