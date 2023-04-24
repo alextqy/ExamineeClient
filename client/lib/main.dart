@@ -56,6 +56,7 @@ class EntranceState extends State<Entrance> {
   TextEditingController portController = TextEditingController();
   String accountType = Lang().accountType;
   int groupValue = 1;
+  Color accountColor = Colors.white;
 
   doExam(String examNo) {
     examineeTokenNotifier.signInAdmissionTicket(examNo: examNo).then((result) {
@@ -127,6 +128,7 @@ class EntranceState extends State<Entrance> {
               groupValue = v ?? 0;
               FileHelper().jsonWrite(key: 'lang', value: 'en');
               accountType = Lang().accountType;
+              accountColor = Colors.white;
             });
           },
         ),
@@ -141,6 +143,7 @@ class EntranceState extends State<Entrance> {
               groupValue = v ?? 0;
               FileHelper().jsonWrite(key: 'lang', value: 'cn');
               accountType = Lang().accountType;
+              accountColor = Colors.white;
             });
           },
         ),
@@ -149,6 +152,73 @@ class EntranceState extends State<Entrance> {
         const SizedBox(width: 10),
       ],
     );
+  }
+
+  void checkExam(BuildContext context) {
+    if (accountController.text.isNotEmpty) {
+      if (accountType != Lang().accountType) {
+        showSnackBar(context, content: Lang().loading);
+        Tools().clentUDP(int.parse(portController.text)).then((value) {
+          if (value.isNotEmpty) {
+            FileHelper().writeFileAsync('ServerAddress', value).then((value) {
+              if (value == true) {
+                if (accountType == Lang().studentNumber) {
+                  examineeTokenNotifier.signInStudentID(account: accountController.text).then((value) {
+                    if (value.state) {
+                      examineeTokenNotifier.examInfoListModel = ExamInfoModel().fromJsonList(jsonEncode(value.data));
+                      if (examineeTokenNotifier.examInfoListModel.isNotEmpty) {
+                        // print(examineeTokenNotifier.examInfoListModel.length);
+                        examInfoListAlertDialog(context);
+                      } else {
+                        showSnackBar(context, content: Lang().noRegistrationDataAvailable);
+                      }
+                    } else {
+                      showSnackBar(context, content: value.memo);
+                    }
+                  });
+                }
+                if (accountType == Lang().admissionTicketNumber) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CupertinoAlertDialog(
+                        title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?'),
+                        content: const Column(
+                          children: <Widget>[
+                            // const SizedBox(height: 10),
+                            // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
+                          ],
+                        ),
+                        actions: <Widget>[
+                          CupertinoDialogAction(
+                            isDestructiveAction: false,
+                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            isDestructiveAction: true,
+                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
+                            onPressed: () {
+                              doExam(accountController.text);
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
+              }
+            });
+          } else {
+            showSnackBar(context, content: Lang().theRequestFailed);
+          }
+        });
+      } else {
+        showSnackBar(context, content: Lang().unknownAccountType);
+      }
+    }
   }
 
   Widget body() {
@@ -186,24 +256,26 @@ class EntranceState extends State<Entrance> {
               onPressed: () {
                 setState(() {
                   accountType = Lang().studentNumber;
+                  accountColor = Colors.orangeAccent;
                   Navigator.pop(context);
                 });
               },
               child: Text(
                 Lang().studentNumber,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orangeAccent),
               ),
             ),
             CupertinoActionSheetAction(
               onPressed: () {
                 setState(() {
                   accountType = Lang().admissionTicketNumber;
+                  accountColor = Colors.yellowAccent;
                   Navigator.pop(context);
                 });
               },
               child: Text(
                 Lang().admissionTicketNumber,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.yellowAccent),
               ),
             ),
           ],
@@ -266,6 +338,18 @@ class EntranceState extends State<Entrance> {
                     ),
                     hintText: Lang().account,
                     hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    prefixIconConstraints: const BoxConstraints(minWidth: 60),
+                    prefixIconColor: accountColor,
+                    prefixIcon: Tooltip(
+                      decoration: const BoxDecoration(color: Colors.grey),
+                      textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      message: Lang().accountType,
+                      child: IconButton(
+                        iconSize: 20,
+                        onPressed: () => showActionSheet(context),
+                        icon: const Icon(Icons.type_specimen_sharp),
+                      ),
+                    ),
                     suffixIconColor: Colors.white,
                     suffixIcon: IconButton(
                       iconSize: 20,
@@ -274,75 +358,13 @@ class EntranceState extends State<Entrance> {
                     ),
                   ),
                   onSubmitted: (value) {
-                    if (accountController.text.isNotEmpty) {
-                      if (accountType != Lang().accountType) {
-                        showSnackBar(context, content: Lang().loading);
-                        Tools().clentUDP(int.parse(portController.text)).then((value) {
-                          if (value.isNotEmpty) {
-                            FileHelper().writeFileAsync('ServerAddress', value).then((value) {
-                              if (value == true) {
-                                if (accountType == Lang().studentNumber) {
-                                  examineeTokenNotifier.signInStudentID(account: accountController.text).then((value) {
-                                    if (value.state) {
-                                      examineeTokenNotifier.examInfoListModel = ExamInfoModel().fromJsonList(jsonEncode(value.data));
-                                      if (examineeTokenNotifier.examInfoListModel.isNotEmpty) {
-                                        // print(examineeTokenNotifier.examInfoListModel.length);
-                                        examInfoListAlertDialog(context);
-                                      } else {
-                                        showSnackBar(context, content: Lang().noRegistrationDataAvailable);
-                                      }
-                                    } else {
-                                      showSnackBar(context, content: value.memo);
-                                    }
-                                  });
-                                }
-                                if (accountType == Lang().admissionTicketNumber) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return CupertinoAlertDialog(
-                                        title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().startExam} ?'),
-                                        content: const Column(
-                                          children: <Widget>[
-                                            // const SizedBox(height: 10),
-                                            // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
-                                          ],
-                                        ),
-                                        actions: <Widget>[
-                                          CupertinoDialogAction(
-                                            isDestructiveAction: false,
-                                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          CupertinoDialogAction(
-                                            isDestructiveAction: true,
-                                            child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
-                                            onPressed: () {
-                                              doExam(accountController.text);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              }
-                            });
-                          } else {
-                            showSnackBar(context, content: Lang().theRequestFailed);
-                          }
-                        });
-                      } else {
-                        showSnackBar(context, content: Lang().unknownAccountType);
-                      }
-                    }
+                    checkExam(context);
                   },
                 ),
               ),
             ),
           ),
+          /*
           Visibility(
             visible: examinationShow,
             child: Row(
@@ -360,6 +382,7 @@ class EntranceState extends State<Entrance> {
               ],
             ),
           ),
+          */
           Visibility(
             visible: selfTestShow,
             child: SizedBox(
