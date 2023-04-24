@@ -296,9 +296,14 @@ class EntranceState extends State<Entrance> {
             visible: connectionTestShow,
             child: SizedBox(
               width: 300,
-              child: TextField(
-                controller: portController,
-                style: const TextStyle(color: Colors.white),
+              child: Tooltip(
+                // decoration: const BoxDecoration(color: Colors.grey),
+                // textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                message: Lang().broadcastPort,
+                child: TextField(
+                  controller: portController,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),

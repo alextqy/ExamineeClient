@@ -31,6 +31,7 @@ class Lang {
   String startExam = '';
   String loginFailed = '';
   String testQuestions = '';
+  String broadcastPort = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -63,6 +64,7 @@ class Lang {
       this.startExam = '开始考试';
       this.loginFailed = '登录失败';
       this.testQuestions = '试题';
+      this.broadcastPort = 'Broadcast Port';
     } else {
       this.none = '';
       this.title = title;
@@ -92,6 +94,7 @@ class Lang {
       this.startExam = 'Start Exam';
       this.loginFailed = 'Login Failed';
       this.testQuestions = 'Test Questions';
+      this.broadcastPort = 'Broadcast Port';
     }
   }
 }
