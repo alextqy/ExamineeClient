@@ -300,6 +300,7 @@ class EntranceState extends State<Entrance> {
                 // decoration: const BoxDecoration(color: Colors.grey),
                 // textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 textStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                preferBelow: false,
                 message: Lang().broadcastPort,
                 child: TextField(
                   controller: portController,
