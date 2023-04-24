@@ -269,13 +269,13 @@ class EntranceState extends State<Entrance> {
               onPressed: () {
                 setState(() {
                   accountType = Lang().admissionTicketNumber;
-                  accountColor = Colors.yellowAccent;
+                  accountColor = Colors.redAccent;
                   Navigator.pop(context);
                 });
               },
               child: Text(
                 Lang().admissionTicketNumber,
-                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.yellowAccent),
+                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent),
               ),
             ),
           ],
@@ -345,16 +345,16 @@ class EntranceState extends State<Entrance> {
                     ),
                     hintText: Lang().account,
                     hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                    prefixIconConstraints: const BoxConstraints(minWidth: 60),
+                    prefixIconConstraints: const BoxConstraints(minWidth: 70),
                     prefixIconColor: accountColor,
                     prefixIcon: Tooltip(
                       decoration: const BoxDecoration(color: Colors.grey),
                       textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       message: Lang().accountType,
                       child: IconButton(
-                        iconSize: 20,
+                        iconSize: 30,
                         onPressed: () => showActionSheet(context),
-                        icon: const Icon(Icons.type_specimen_sharp),
+                        icon: const Icon(Icons.type_specimen_outlined),
                       ),
                     ),
                     suffixIconColor: Colors.white,
