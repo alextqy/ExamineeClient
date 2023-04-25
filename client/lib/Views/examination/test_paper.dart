@@ -22,7 +22,6 @@ class TestPaper extends StatefulWidget {
 class TestPaperState extends State<TestPaper> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
   int currentItemID = 0;
-  Color locationColor = Colors.lightGreenAccent;
 
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
@@ -39,56 +38,50 @@ class TestPaperState extends State<TestPaper> {
     examineeTokenNotifier.examScantronList().then((value) {
       setState(() {
         examineeTokenNotifier.scantronListModel = ScantronModel().fromJsonList(jsonEncode(value.data));
-        if (examineeTokenNotifier.scantronListModel.isNotEmpty) {
-          generateList();
-        }
       });
     });
   }
 
-  List<Container> generateList() {
-    List<Container> scantronListTile = [];
-    for (ScantronModel element in examineeTokenNotifier.scantronListModel) {
-      Widget frontWidget = element.headlineContent == 'none' ? const SizedBox(width: 10) : const Expanded(child: SizedBox());
-      double titleIconSize = element.headlineContent == 'none' ? 15 : 0;
-      double titleIconSpace = element.headlineContent == 'none' ? 20 : 0;
-      String title = element.headlineContent == 'none' ? element.questionTitle : element.headlineContent;
-      double titleFontSize = element.headlineContent == 'none' ? 15 : 20;
-      TextAlign textAlign = element.headlineContent == 'none' ? TextAlign.left : TextAlign.center;
-      Color textColor = element.headlineContent == 'none' ? Colors.white : Colors.grey;
-      scantronListTile.add(
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            children: [
-              frontWidget,
-              Icon(
-                Icons.radio_button_unchecked_outlined,
-                size: titleIconSize,
-                color: Colors.white,
-              ),
-              SizedBox(width: titleIconSpace),
-              InkWell(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: textAlign,
-                  style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: titleFontSize),
+  Widget generateList(BuildContext context, int index) {
+    return ListTile(
+      title: Container(
+        color: currentItemID == index ? Colors.black : null,
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(0),
+        alignment: Alignment.center,
+        child: Row(
+          children: [
+            examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? const SizedBox(width: 10) : const Expanded(child: SizedBox()),
+            Icon(
+              currentItemID == index ? Icons.my_location_outlined : Icons.radio_button_unchecked_outlined,
+              size: examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? 15 : 0,
+              color: Colors.white,
+            ),
+            SizedBox(width: examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? 15 : 0),
+            SizedBox(
+              width: 180,
+              child: Text(
+                examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? examineeTokenNotifier.scantronListModel[index].questionTitle : examineeTokenNotifier.scantronListModel[index].headlineContent,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? TextAlign.left : TextAlign.center,
+                style: TextStyle(
+                  color: examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? Colors.white : Colors.grey,
+                  fontWeight: FontWeight.bold,
+                  fontSize: examineeTokenNotifier.scantronListModel[index].headlineContent == 'none' ? 15 : 20,
                 ),
-                onTap: () {
-                  setState(() {
-                    print(element.id);
-                  });
-                },
               ),
-              const Expanded(child: SizedBox()),
-            ],
-          ),
+            ),
+            const Expanded(child: SizedBox()),
+          ],
         ),
-      );
-    }
-    return scantronListTile;
+      ),
+      onTap: () {
+        setState(() {
+          currentItemID = index;
+        });
+      },
+    );
   }
 
   @override
@@ -107,7 +100,7 @@ class TestPaperState extends State<TestPaper> {
 
   Drawer questions(BuildContext context) {
     return Drawer(
-      width: 300,
+      width: 280,
       child: Column(
         children: [
           Container(
@@ -122,7 +115,13 @@ class TestPaperState extends State<TestPaper> {
           ),
           Container(height: 1.0, color: Colors.white),
           Expanded(
-            child: ListView(padding: const EdgeInsets.all(0), children: generateList()),
+            child: ListView.builder(
+              padding: const EdgeInsets.all(0),
+              itemCount: examineeTokenNotifier.scantronListModel.length,
+              itemBuilder: (BuildContext context, int index) {
+                return generateList(context, index);
+              },
+            ),
           ),
           Container(height: 1.0, color: Colors.white),
           Container(
@@ -131,18 +130,18 @@ class TestPaperState extends State<TestPaper> {
               children: [
                 SizedBox(
                   height: 40,
-                  width: 150,
+                  width: 140,
                   child: IconButton(
                     iconSize: 18,
                     icon: const Icon(Icons.my_location_outlined),
-                    color: locationColor,
+                    color: Colors.white,
                     onPressed: () => print('focus'),
                   ),
                 ),
                 const Expanded(child: SizedBox()),
                 SizedBox(
                   height: 40,
-                  width: 150,
+                  width: 140,
                   child: TextButton(
                     child: Text(Lang().exit),
                     onPressed: () {
