@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
 
@@ -95,22 +97,73 @@ class TestPaperState extends State<TestPaper> {
 
   Drawer questions(BuildContext context) {
     return Drawer(
-      width: 280,
+      width: 300,
       child: Column(
         children: [
-          const SizedBox(height: 10),
-          SizedBox(
-            height: 30,
-            child: Text(
-              Lang().testQuestions,
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: SizedBox(
+              height: 30,
+              child: Text(
+                Lang().testQuestions,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+              ),
             ),
           ),
           Container(height: 1.0, color: Colors.white),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(0),
-              children: generateList(),
+            child: ListView(padding: const EdgeInsets.all(0), children: generateList()),
+          ),
+          Container(height: 1.0, color: Colors.white),
+          Container(
+            margin: const EdgeInsets.all(0),
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 40,
+                  width: 150,
+                  child: IconButton(iconSize: 18, icon: const Icon(Icons.my_location_outlined), onPressed: () => print('focus')),
+                ),
+                const Expanded(child: SizedBox()),
+                SizedBox(
+                  height: 40,
+                  width: 150,
+                  child: TextButton(
+                      child: Text(Lang().exit),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().exit} ?'),
+                              content: const Column(
+                                children: <Widget>[
+                                  // const SizedBox(height: 10),
+                                  // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
+                                ],
+                              ),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  isDestructiveAction: false,
+                                  child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                  isDestructiveAction: true,
+                                  child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
+                                  onPressed: () {
+                                    exit(0);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                ),
+              ],
             ),
           ),
         ],

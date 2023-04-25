@@ -352,9 +352,9 @@ class EntranceState extends State<Entrance> {
                       textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       message: Lang().accountType,
                       child: IconButton(
-                        iconSize: 30,
+                        iconSize: 25,
                         onPressed: () => showActionSheet(context),
-                        icon: const Icon(Icons.type_specimen_outlined),
+                        icon: const Icon(Icons.type_specimen_sharp),
                       ),
                     ),
                     suffixIconColor: Colors.white,
