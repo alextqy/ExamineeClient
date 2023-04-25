@@ -21,6 +21,7 @@ class TestPaper extends StatefulWidget {
 
 class TestPaperState extends State<TestPaper> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+  ScrollController listViewController = ScrollController();
   int currentItemID = 0;
 
   basicListener() async {
@@ -116,6 +117,7 @@ class TestPaperState extends State<TestPaper> {
           Container(height: 1.0, color: Colors.white),
           Expanded(
             child: ListView.builder(
+              controller: listViewController,
               padding: const EdgeInsets.all(0),
               itemCount: examineeTokenNotifier.scantronListModel.length,
               itemBuilder: (BuildContext context, int index) {
@@ -135,7 +137,11 @@ class TestPaperState extends State<TestPaper> {
                     iconSize: 18,
                     icon: const Icon(Icons.my_location_outlined),
                     color: Colors.white,
-                    onPressed: () => print('focus'),
+                    onPressed: () {
+                      setState(() {
+                        listViewController.animateTo(listViewController.position.maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.easeOutQuart);
+                      });
+                    },
                   ),
                 ),
                 const Expanded(child: SizedBox()),
