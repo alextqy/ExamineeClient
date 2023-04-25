@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
+import 'package:client/public/tools.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
 
 import 'package:client/providers/base_notifier.dart';
@@ -28,7 +29,6 @@ class TestPaperState extends State<TestPaper> {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
       showSnackBar(context, content: Lang().loading);
     } else if (examineeTokenNotifier.operationStatus.value == OperationStatus.success) {
-      // fetchData();
       showSnackBar(context, content: Lang().theOperationCompletes);
     } else {
       showSnackBar(context, content: examineeTokenNotifier.operationMemo);
@@ -44,7 +44,8 @@ class TestPaperState extends State<TestPaper> {
   }
 
   Widget generateList(BuildContext context, int index) {
-    return ListTile(
+    ListTile listTileWidget = ListTile(
+      key: ValueKey(Tools().genMD5(examineeTokenNotifier.scantronListModel[index].id.toString())),
       title: Container(
         color: currentItemID == index ? Colors.black : null,
         padding: const EdgeInsets.all(10),
@@ -83,6 +84,7 @@ class TestPaperState extends State<TestPaper> {
         });
       },
     );
+    return listTileWidget;
   }
 
   @override
@@ -139,7 +141,12 @@ class TestPaperState extends State<TestPaper> {
                     color: Colors.white,
                     onPressed: () {
                       setState(() {
-                        listViewController.animateTo(listViewController.position.maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.easeOutQuart);
+                        // 滚动到指定位置
+                        listViewController.animateTo(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOutQuart,
+                          listViewController.position.maxScrollExtent,
+                        );
                       });
                     },
                   ),
