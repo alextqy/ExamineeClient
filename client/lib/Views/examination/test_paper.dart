@@ -24,6 +24,7 @@ class TestPaperState extends State<TestPaper> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
   ScrollController listViewController = ScrollController();
   int currentItemID = 0;
+  double currentListOffset = 0;
 
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
@@ -81,6 +82,7 @@ class TestPaperState extends State<TestPaper> {
       onTap: () {
         setState(() {
           currentItemID = index;
+          currentListOffset = listViewController.offset;
         });
       },
     );
@@ -145,7 +147,7 @@ class TestPaperState extends State<TestPaper> {
                         listViewController.animateTo(
                           duration: const Duration(milliseconds: 500),
                           curve: Curves.easeOutQuart,
-                          listViewController.position.maxScrollExtent,
+                          currentListOffset,
                         );
                       });
                     },
