@@ -21,6 +21,8 @@ class TestPaper extends StatefulWidget {
 
 class TestPaperState extends State<TestPaper> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+  int currentItemID = 0;
+  Color locationColor = Colors.lightGreenAccent;
 
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
@@ -60,7 +62,11 @@ class TestPaperState extends State<TestPaper> {
           child: Row(
             children: [
               frontWidget,
-              Icon(Icons.radio_button_unchecked_outlined, size: titleIconSize),
+              Icon(
+                Icons.radio_button_unchecked_outlined,
+                size: titleIconSize,
+                color: Colors.white,
+              ),
               SizedBox(width: titleIconSpace),
               InkWell(
                 child: Text(
@@ -70,7 +76,11 @@ class TestPaperState extends State<TestPaper> {
                   textAlign: textAlign,
                   style: TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: titleFontSize),
                 ),
-                onTap: () => print(element.id),
+                onTap: () {
+                  setState(() {
+                    print(element.id);
+                  });
+                },
               ),
               const Expanded(child: SizedBox()),
             ],
@@ -122,46 +132,52 @@ class TestPaperState extends State<TestPaper> {
                 SizedBox(
                   height: 40,
                   width: 150,
-                  child: IconButton(iconSize: 18, icon: const Icon(Icons.my_location_outlined), onPressed: () => print('focus')),
+                  child: IconButton(
+                    iconSize: 18,
+                    icon: const Icon(Icons.my_location_outlined),
+                    color: locationColor,
+                    onPressed: () => print('focus'),
+                  ),
                 ),
                 const Expanded(child: SizedBox()),
                 SizedBox(
                   height: 40,
                   width: 150,
                   child: TextButton(
-                      child: Text(Lang().exit),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CupertinoAlertDialog(
-                              title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().exit} ?'),
-                              content: const Column(
-                                children: <Widget>[
-                                  // const SizedBox(height: 10),
-                                  // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
-                                ],
-                              ),
-                              actions: <Widget>[
-                                CupertinoDialogAction(
-                                  isDestructiveAction: false,
-                                  child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                CupertinoDialogAction(
-                                  isDestructiveAction: true,
-                                  child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
-                                  onPressed: () {
-                                    exit(0);
-                                  },
-                                ),
+                    child: Text(Lang().exit),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            title: Text(style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20), '${Lang().exit} ?'),
+                            content: const Column(
+                              children: <Widget>[
+                                // const SizedBox(height: 10),
+                                // Align(alignment: const Alignment(0, 0), child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().none)),
                               ],
-                            );
-                          },
-                        );
-                      }),
+                            ),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                isDestructiveAction: false,
+                                child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().cancel),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                isDestructiveAction: true,
+                                child: Text(style: const TextStyle(fontWeight: FontWeight.bold), Lang().confirm),
+                                onPressed: () {
+                                  exit(0);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
