@@ -33,6 +33,8 @@ class Lang {
   String testQuestions = '';
   String broadcastPort = '';
   String exit = '';
+  String previous = '';
+  String next = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -67,6 +69,8 @@ class Lang {
       this.testQuestions = '试题';
       this.broadcastPort = 'Broadcast Port';
       this.exit = '退出';
+      this.previous = '上一个';
+      this.next = '下一个';
     } else {
       this.none = '';
       this.title = title;
@@ -98,6 +102,8 @@ class Lang {
       this.testQuestions = 'Test Questions';
       this.broadcastPort = 'Broadcast Port';
       this.exit = 'Exit';
+      this.previous = 'Previous';
+      this.next = 'Next';
     }
   }
 }

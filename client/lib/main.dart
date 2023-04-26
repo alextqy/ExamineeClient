@@ -299,7 +299,8 @@ class EntranceState extends State<Entrance> {
               child: Tooltip(
                 // decoration: const BoxDecoration(color: Colors.grey),
                 // textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                textStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                decoration: const BoxDecoration(color: Colors.transparent),
                 preferBelow: false,
                 message: Lang().broadcastPort,
                 child: TextField(
@@ -328,7 +329,7 @@ class EntranceState extends State<Entrance> {
             child: SizedBox(
               width: 350,
               child: Tooltip(
-                decoration: const BoxDecoration(color: Colors.grey),
+                decoration: const BoxDecoration(color: Colors.transparent),
                 textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 message: Lang().enterToEnter,
                 child: TextField(
@@ -348,7 +349,7 @@ class EntranceState extends State<Entrance> {
                     prefixIconConstraints: const BoxConstraints(minWidth: 70),
                     prefixIconColor: accountColor,
                     prefixIcon: Tooltip(
-                      decoration: const BoxDecoration(color: Colors.grey),
+                      decoration: const BoxDecoration(color: Colors.transparent),
                       textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                       message: Lang().accountType,
                       child: IconButton(
@@ -395,7 +396,7 @@ class EntranceState extends State<Entrance> {
             child: SizedBox(
               width: 350,
               child: Tooltip(
-                decoration: const BoxDecoration(color: Colors.grey),
+                decoration: const BoxDecoration(color: Colors.transparent),
                 textStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                 message: Lang().enterToEnter,
                 child: TextField(
