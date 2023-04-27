@@ -15,8 +15,9 @@ import 'package:client/models/scantron_model.dart';
 
 // ignore: must_be_immutable
 class TestPaper extends StatefulWidget {
+  int seconds = 0;
   TimerHandler timerHandler = TimerHandler(seconds: 10);
-  TestPaper({super.key});
+  TestPaper({super.key, required this.seconds});
 
   @override
   State<TestPaper> createState() => TestPaperState();
