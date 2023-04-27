@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:client/public/lang.dart';
 import 'package:client/public/tools.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
-// import 'package:client/Views/common/basic_info.dart';
+import 'package:client/Views/common/basic_info.dart';
 
 import 'package:client/providers/base_notifier.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
@@ -15,7 +15,8 @@ import 'package:client/models/scantron_model.dart';
 
 // ignore: must_be_immutable
 class TestPaper extends StatefulWidget {
-  const TestPaper({super.key});
+  TimerHandler timerHandler = TimerHandler(seconds: 10);
+  TestPaper({super.key});
 
   @override
   State<TestPaper> createState() => TestPaperState();
@@ -240,31 +241,35 @@ class TestPaperState extends State<TestPaper> {
                     decoration: const BoxDecoration(color: Colors.transparent),
                     textStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                     message: Lang().previous,
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(0),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black),
-                        onPressed: () {
-                          setState(() {
-                            if (currentItemID > 0) {
-                              currentItemID -= 1;
-                              currentListOffset = currentItemID * 30;
-                              print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
-                            }
-                          });
-                        },
+                    child: SizedBox(
+                      width: 50,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios_new_outlined, color: Colors.black),
+                          onPressed: () {
+                            setState(() {
+                              if (currentItemID > 0) {
+                                currentItemID -= 1;
+                                currentListOffset = currentItemID * 30;
+                                print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
                   Expanded(
                     child: Container(
-                      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                      alignment: Alignment.center,
+                      decoration: ShapeDecoration(shape: Border.all(width: 0, color: Colors.transparent)),
+                      padding: const EdgeInsets.all(30),
+                      margin: const EdgeInsets.all(0),
                       child: const Column(
                         children: [
                           Text(
-                            style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
                             'asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发',
                           ),
                         ],
@@ -275,20 +280,23 @@ class TestPaperState extends State<TestPaper> {
                     decoration: const BoxDecoration(color: Colors.transparent),
                     textStyle: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                     message: Lang().next,
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.all(0),
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black),
-                        onPressed: () {
-                          setState(() {
-                            if (currentItemID < examineeTokenNotifier.scantronListModel.length - 1) {
-                              currentItemID += 1;
-                              currentListOffset = currentItemID * 30;
-                              print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
-                            }
-                          });
-                        },
+                    child: SizedBox(
+                      width: 50,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        padding: const EdgeInsets.all(0),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_forward_ios_outlined, color: Colors.black),
+                          onPressed: () {
+                            setState(() {
+                              if (currentItemID < examineeTokenNotifier.scantronListModel.length - 1) {
+                                currentItemID += 1;
+                                currentListOffset = currentItemID * 30;
+                                print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
+                              }
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),
@@ -307,9 +315,11 @@ class TestPaperState extends State<TestPaper> {
                 height: double.infinity,
                 padding: const EdgeInsets.all(0),
                 margin: const EdgeInsets.all(0),
-                child: const Row(
-                  children: [],
-                ),
+                child: Row(children: [
+                  const Expanded(child: SizedBox()),
+                  widget.timerHandler,
+                  const Expanded(child: SizedBox()),
+                ]),
               ),
             ),
           ],
