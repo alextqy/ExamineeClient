@@ -117,11 +117,11 @@ class TestPaperState extends State<TestPaper> {
               height: 30,
               child: Text(
                 Lang().testQuestions,
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
+                style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
           ),
-          Container(height: 1.0, color: Colors.white),
+          Container(height: 1.0, color: Colors.grey),
           Expanded(
             child: ListView.builder(
               controller: listViewController,
@@ -132,7 +132,7 @@ class TestPaperState extends State<TestPaper> {
               },
             ),
           ),
-          Container(height: 1.0, color: Colors.white),
+          Container(height: 1.0, color: Colors.grey),
           Container(
             margin: const EdgeInsets.all(0),
             child: Row(
@@ -161,7 +161,7 @@ class TestPaperState extends State<TestPaper> {
                   height: 40,
                   width: 140,
                   child: TextButton(
-                    child: Text(Lang().exit),
+                    child: Text(Lang().exit, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey)),
                     onPressed: () {
                       showDialog(
                         context: context,
@@ -305,7 +305,7 @@ class TestPaperState extends State<TestPaper> {
               ),
             ),
 
-            Container(height: 5.0, color: Colors.grey),
+            Container(height: 5.0, color: Colors.transparent),
 
             /// footer
             SizedBox(
