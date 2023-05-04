@@ -65,7 +65,7 @@ class EntranceState extends State<Entrance> {
           showSnackBar(context, content: Lang().loginFailed);
         } else {
           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => const TestPaper()));
-          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => TestPaper(seconds: 10)), (Route<dynamic> route) {
+          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => TestPaper(seconds: 20)), (Route<dynamic> route) {
             return route.isFirst;
           });
         }

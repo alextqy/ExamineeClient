@@ -7,6 +7,7 @@ import 'package:client/public/lang.dart';
 import 'package:client/public/tools.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
 import 'package:client/Views/common/basic_info.dart';
+import 'package:client/Views/common/test_questions.dart';
 
 import 'package:client/providers/base_notifier.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
@@ -16,8 +17,10 @@ import 'package:client/models/scantron_model.dart';
 // ignore: must_be_immutable
 class TestPaper extends StatefulWidget {
   int seconds = 0;
-  TimerHandler timerHandler = TimerHandler(seconds: 10);
-  TestPaper({super.key, required this.seconds});
+  late TimerHandler timerHandler;
+  TestPaper({super.key, required this.seconds}) {
+    timerHandler = TimerHandler(seconds: seconds);
+  }
 
   @override
   State<TestPaper> createState() => TestPaperState();
@@ -28,6 +31,22 @@ class TestPaperState extends State<TestPaper> {
   ScrollController listViewController = ScrollController();
   int currentItemID = 0;
   double currentListOffset = 0;
+
+  bool multipleChoiceShow = false;
+  bool judgmentQuestionsShow = false;
+  bool multipleSelectionShow = false;
+  bool fillInTheBlanksShow = false;
+  bool quizQuestionsShow = false;
+  bool codeTestingShow = false;
+  bool dragShow = false;
+  bool connectionShow = false;
+
+  int currentQuestionType = 0;
+  String currentQuestionTitle = '';
+  double currentScore = 0;
+  String currentHeadlineContent = '';
+  String currentDescription = '';
+  String currentAttachment = '';
 
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
@@ -86,6 +105,7 @@ class TestPaperState extends State<TestPaper> {
         setState(() {
           currentItemID = index;
           currentListOffset = listViewController.offset;
+          questionContext();
         });
       },
     );
@@ -204,6 +224,109 @@ class TestPaperState extends State<TestPaper> {
     );
   }
 
+  // 试题类型 1单选 2判断 3多选 4填空 5问答 6代码实训 7拖拽 8连线
+  showQuestion(int questionType) {
+    switch (questionType) {
+      case 1:
+        multipleChoiceShow = true;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 2:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = true;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 3:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = true;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 4:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = true;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 5:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = true;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 6:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = true;
+        dragShow = false;
+        connectionShow = false;
+        break;
+      case 7:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = true;
+        connectionShow = false;
+        break;
+      case 8:
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = true;
+        break;
+      default:
+        break;
+    }
+  }
+
+  // 试题详情
+  questionContext() {
+    if (currentItemID > 0) {
+      currentQuestionType = examineeTokenNotifier.scantronListModel[currentItemID].questionType;
+      currentQuestionTitle = examineeTokenNotifier.scantronListModel[currentItemID].questionTitle;
+      currentScore = examineeTokenNotifier.scantronListModel[currentItemID].score;
+      currentHeadlineContent = examineeTokenNotifier.scantronListModel[currentItemID].headlineContent;
+      currentDescription = examineeTokenNotifier.scantronListModel[currentItemID].description;
+      currentAttachment = examineeTokenNotifier.scantronListModel[currentItemID].attachment;
+      setState(() {
+        showQuestion(currentQuestionType);
+      });
+    }
+  }
+
   Widget mainWidget(BuildContext context) {
     return Container(
       width: double.infinity,
@@ -254,7 +377,7 @@ class TestPaperState extends State<TestPaper> {
                               if (currentItemID > 0) {
                                 currentItemID -= 1;
                                 currentListOffset = currentItemID * 30;
-                                print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
+                                questionContext();
                               }
                             });
                           },
@@ -267,11 +390,87 @@ class TestPaperState extends State<TestPaper> {
                       decoration: ShapeDecoration(shape: Border.all(width: 0, color: Colors.transparent)),
                       padding: const EdgeInsets.all(30),
                       margin: const EdgeInsets.all(0),
-                      child: const Column(
+                      child: Column(
                         children: [
-                          Text(
-                            style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-                            'asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发asdfasdf发生发射点发',
+                          Visibility(
+                            visible: multipleChoiceShow,
+                            child: MultipleChoice(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: judgmentQuestionsShow,
+                            child: JudgmentQuestions(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: multipleSelectionShow,
+                            child: MultipleSelection(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: fillInTheBlanksShow,
+                            child: FillInTheBlanks(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: quizQuestionsShow,
+                            child: QuizQuestions(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: codeTestingShow,
+                            child: CodeTesting(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: dragShow,
+                            child: Drag(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
+                          Visibility(
+                            visible: connectionShow,
+                            child: Connection(
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              headlineContent: currentHeadlineContent,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
                           ),
                         ],
                       ),
@@ -293,7 +492,7 @@ class TestPaperState extends State<TestPaper> {
                               if (currentItemID < examineeTokenNotifier.scantronListModel.length - 1) {
                                 currentItemID += 1;
                                 currentListOffset = currentItemID * 30;
-                                print(examineeTokenNotifier.scantronListModel[currentItemID].questionTitle);
+                                questionContext();
                               }
                             });
                           },
