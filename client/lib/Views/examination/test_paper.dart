@@ -41,6 +41,7 @@ class TestPaperState extends State<TestPaper> {
   bool dragShow = false;
   bool connectionShow = false;
 
+  int currentID = 0;
   int currentQuestionType = 0;
   String currentQuestionTitle = '';
   double currentScore = 0;
@@ -315,6 +316,7 @@ class TestPaperState extends State<TestPaper> {
   // 试题详情
   questionContext() {
     if (currentItemID > 0) {
+      currentID = examineeTokenNotifier.scantronListModel[currentItemID].id;
       currentQuestionType = examineeTokenNotifier.scantronListModel[currentItemID].questionType;
       currentQuestionTitle = examineeTokenNotifier.scantronListModel[currentItemID].questionTitle;
       currentScore = examineeTokenNotifier.scantronListModel[currentItemID].score;
@@ -395,6 +397,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: multipleChoiceShow,
                             child: MultipleChoice(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -405,6 +408,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: judgmentQuestionsShow,
                             child: JudgmentQuestions(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -415,6 +419,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: multipleSelectionShow,
                             child: MultipleSelection(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -425,6 +430,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: fillInTheBlanksShow,
                             child: FillInTheBlanks(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -435,6 +441,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: quizQuestionsShow,
                             child: QuizQuestions(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -445,6 +452,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: codeTestingShow,
                             child: CodeTesting(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -455,6 +463,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: dragShow,
                             child: Drag(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,
@@ -465,6 +474,7 @@ class TestPaperState extends State<TestPaper> {
                           Visibility(
                             visible: connectionShow,
                             child: Connection(
+                              id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
                               headlineContent: currentHeadlineContent,

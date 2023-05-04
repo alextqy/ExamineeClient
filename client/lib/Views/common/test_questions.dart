@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 /// ===============================================================================================================================================================
 
 class MultipleChoice extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -13,6 +14,7 @@ class MultipleChoice extends StatefulWidget {
   String attachment;
   MultipleChoice({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -53,6 +55,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
 /// ===============================================================================================================================================================
 
 class JudgmentQuestions extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -60,6 +63,7 @@ class JudgmentQuestions extends StatefulWidget {
   String attachment;
   JudgmentQuestions({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -100,6 +104,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
 /// ===============================================================================================================================================================
 
 class MultipleSelection extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -107,6 +112,7 @@ class MultipleSelection extends StatefulWidget {
   String attachment;
   MultipleSelection({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -147,12 +153,14 @@ class MultipleSelectionState extends State<MultipleSelection> {
 /// ===============================================================================================================================================================
 
 class FillInTheBlanks extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
   String description;
   String attachment;
   FillInTheBlanks({
+    required this.id,
     super.key,
     required this.questionTitle,
     required this.score,
@@ -194,6 +202,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
 /// ===============================================================================================================================================================
 
 class QuizQuestions extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -201,6 +210,7 @@ class QuizQuestions extends StatefulWidget {
   String attachment;
   QuizQuestions({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -241,6 +251,7 @@ class QuizQuestionsState extends State<QuizQuestions> {
 /// ===============================================================================================================================================================
 
 class CodeTesting extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -248,6 +259,7 @@ class CodeTesting extends StatefulWidget {
   String attachment;
   CodeTesting({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -288,6 +300,7 @@ class CodeTestingState extends State<CodeTesting> {
 /// ===============================================================================================================================================================
 
 class Drag extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -295,6 +308,7 @@ class Drag extends StatefulWidget {
   String attachment;
   Drag({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
@@ -335,6 +349,7 @@ class DragState extends State<Drag> {
 /// ===============================================================================================================================================================
 
 class Connection extends StatefulWidget {
+  int id;
   String questionTitle;
   double score;
   String headlineContent;
@@ -342,6 +357,7 @@ class Connection extends StatefulWidget {
   String attachment;
   Connection({
     super.key,
+    required this.id,
     required this.questionTitle,
     required this.score,
     required this.headlineContent,
