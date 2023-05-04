@@ -39,7 +39,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('MultipleChoice', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -88,7 +88,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('JudgmentQuestions', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -137,7 +137,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('MultipleSelection', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -186,7 +186,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('FillInTheBlanks', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -235,7 +235,7 @@ class QuizQuestionsState extends State<QuizQuestions> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('QuizQuestions', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -284,7 +284,7 @@ class CodeTestingState extends State<CodeTesting> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('CodeTesting', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -333,7 +333,7 @@ class DragState extends State<Drag> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('Drag', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
@@ -382,7 +382,7 @@ class ConnectionState extends State<Connection> {
 
   Widget mainWidget(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
       child: const Center(child: Text('Connection', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
     );
