@@ -22,26 +22,10 @@ class ExamineeTokenNotifier extends BaseNotifier {
     return await examineeTokenApi.examScantronList();
   }
 
-  void examScantronSolutionInfo({
+  Future<DataModel> examScantronSolutionInfo({
     required int id,
   }) async {
-    operationStatus.value = OperationStatus.loading;
-    try {
-      result = await examineeTokenApi.examScantronSolutionInfo(
-        id: id,
-      );
-      if (result.state == true) {
-        operationStatus.value = OperationStatus.success;
-      } else {
-        operationStatus.value = OperationStatus.failure;
-        operationMemo = result.memo;
-      }
-    } catch (e) {
-      operationStatus.value = OperationStatus.failure;
-      operationMemo = e.toString();
-    } finally {
-      notifyListeners();
-    }
+    return await examineeTokenApi.examScantronSolutionInfo(id: id);
   }
 
   void examAnswer({

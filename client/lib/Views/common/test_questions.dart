@@ -1,6 +1,11 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:convert';
+
+import 'package:client/models/scantron_model.dart';
+import 'package:client/models/scantron_solution_model.dart';
 import 'package:flutter/material.dart';
+import 'package:client/providers/examinee_token_notifier.dart';
 
 /// 单选
 /// ===============================================================================================================================================================
@@ -27,9 +32,20 @@ class MultipleChoice extends StatefulWidget {
 }
 
 class MultipleChoiceState extends State<MultipleChoice> {
+  ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+
+  void fetchData() {
+    examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   @override
@@ -41,7 +57,29 @@ class MultipleChoiceState extends State<MultipleChoice> {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
-      child: const Center(child: Text('MultipleChoice', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+      child: Center(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  widget.questionTitle,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Text(
+                  widget.description,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
