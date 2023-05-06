@@ -2,10 +2,58 @@
 
 import 'dart:convert';
 
-import 'package:client/models/scantron_model.dart';
-import 'package:client/models/scantron_solution_model.dart';
 import 'package:flutter/material.dart';
+import 'package:client/models/scantron_solution_model.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
+// import 'package:client/Views/common/basic_info.dart';
+
+/// 大标题
+/// ===============================================================================================================================================================
+
+class Headline extends StatefulWidget {
+  int id;
+  String questionTitle;
+  double score;
+
+  String description;
+  String attachment;
+  Headline({
+    super.key,
+    required this.id,
+    required this.questionTitle,
+    required this.score,
+    required this.description,
+    required this.attachment,
+  });
+
+  @override
+  State<Headline> createState() => HeadlineState();
+}
+
+class HeadlineState extends State<Headline> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Widget mainWidget(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(0),
+      child: Center(child: Text(widget.questionTitle, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20))),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return mainWidget(context);
+  }
+}
 
 /// 单选
 /// ===============================================================================================================================================================
@@ -14,7 +62,6 @@ class MultipleChoice extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
   String description;
   String attachment;
   MultipleChoice({
@@ -22,7 +69,6 @@ class MultipleChoice extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -33,6 +79,7 @@ class MultipleChoice extends StatefulWidget {
 
 class MultipleChoiceState extends State<MultipleChoice> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+  int currentOptionID = 0;
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
@@ -40,6 +87,65 @@ class MultipleChoiceState extends State<MultipleChoice> {
         examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
       });
     });
+  }
+
+  List<Widget> generateList() {
+    List<Widget> listTileWidget = [];
+    if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+      for (ScantronSolutionModel element in examineeTokenNotifier.scantronSolutionListModel) {
+        listTileWidget.add(
+          Row(
+            children: [
+              SizedBox(
+                height: 45,
+                child: Text(
+                  element.option,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+    return listTileWidget;
+    // List<ListTile> listTileWidget = [];
+    // List<Container> optionList = [];
+    // if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+    //   for (var element in examineeTokenNotifier.scantronSolutionListModel) {
+    /*
+        optionList.add(
+          Container(
+            margin: const EdgeInsets.all(0),
+            padding: const EdgeInsets.all(0),
+            child: Row(
+              children: [
+                Icon(currentOptionID == element.id ? Icons.radio_button_checked_outlined : Icons.radio_button_unchecked_outlined, size: 15, color: Colors.black),
+                const SizedBox(width: 10),
+                InkWell(
+                  child: SizedBox(
+                    width: 950,
+                    height: 100,
+                    child: scrollbarWidget(
+                      Text('sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点sadfasdf12312321fsadfasdf发射点发生大撒旦发射点', maxLines: 1, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      currentOptionID = element.id;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+        */
+    //   }
+    // }
+    // return optionList;
   }
 
   @override
@@ -62,21 +168,23 @@ class MultipleChoiceState extends State<MultipleChoice> {
           children: [
             Row(
               children: [
-                Text(
-                  widget.questionTitle,
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
-                ),
+                Text(widget.questionTitle, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20)),
               ],
             ),
             const SizedBox(height: 10),
             Row(
               children: [
-                Text(
-                  widget.description,
-                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
-                ),
+                Text(widget.description, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15)),
               ],
             ),
+            const SizedBox(height: 30),
+            // Expanded(
+            //   child: ListView(
+            //     shrinkWrap: true,
+            //     padding: const EdgeInsets.all(0),
+            //     children: generateList(),
+            //   ),
+            // )
           ],
         ),
       ),
@@ -96,7 +204,7 @@ class JudgmentQuestions extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   JudgmentQuestions({
@@ -104,7 +212,6 @@ class JudgmentQuestions extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -145,7 +252,7 @@ class MultipleSelection extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   MultipleSelection({
@@ -153,7 +260,6 @@ class MultipleSelection extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -194,7 +300,7 @@ class FillInTheBlanks extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   FillInTheBlanks({
@@ -202,7 +308,6 @@ class FillInTheBlanks extends StatefulWidget {
     super.key,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -243,7 +348,7 @@ class QuizQuestions extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   QuizQuestions({
@@ -251,7 +356,6 @@ class QuizQuestions extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -292,7 +396,7 @@ class CodeTesting extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   CodeTesting({
@@ -300,7 +404,6 @@ class CodeTesting extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -341,7 +444,7 @@ class Drag extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   Drag({
@@ -349,7 +452,6 @@ class Drag extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });
@@ -390,7 +492,7 @@ class Connection extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-  String headlineContent;
+
   String description;
   String attachment;
   Connection({
@@ -398,7 +500,6 @@ class Connection extends StatefulWidget {
     required this.id,
     required this.questionTitle,
     required this.score,
-    required this.headlineContent,
     required this.description,
     required this.attachment,
   });

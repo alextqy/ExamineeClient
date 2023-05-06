@@ -32,6 +32,7 @@ class TestPaperState extends State<TestPaper> {
   int currentItemID = 0;
   double currentListOffset = 0;
 
+  bool titleShow = false;
   bool multipleChoiceShow = false;
   bool judgmentQuestionsShow = false;
   bool multipleSelectionShow = false;
@@ -45,7 +46,6 @@ class TestPaperState extends State<TestPaper> {
   int currentQuestionType = 0;
   String currentQuestionTitle = '';
   double currentScore = 0;
-  String currentHeadlineContent = '';
   String currentDescription = '';
   String currentAttachment = '';
 
@@ -228,7 +228,19 @@ class TestPaperState extends State<TestPaper> {
   // 试题类型 1单选 2判断 3多选 4填空 5问答 6代码实训 7拖拽 8连线
   showQuestion(int questionType) {
     switch (questionType) {
+      case 0:
+        titleShow = true;
+        multipleChoiceShow = false;
+        judgmentQuestionsShow = false;
+        multipleSelectionShow = false;
+        fillInTheBlanksShow = false;
+        quizQuestionsShow = false;
+        codeTestingShow = false;
+        dragShow = false;
+        connectionShow = false;
+        break;
       case 1:
+        titleShow = false;
         multipleChoiceShow = true;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -239,6 +251,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 2:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = true;
         multipleSelectionShow = false;
@@ -249,6 +262,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 3:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = true;
@@ -259,6 +273,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 4:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -269,6 +284,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 5:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -279,6 +295,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 6:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -289,6 +306,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 7:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -299,6 +317,7 @@ class TestPaperState extends State<TestPaper> {
         connectionShow = false;
         break;
       case 8:
+        titleShow = false;
         multipleChoiceShow = false;
         judgmentQuestionsShow = false;
         multipleSelectionShow = false;
@@ -315,18 +334,22 @@ class TestPaperState extends State<TestPaper> {
 
   // 试题详情
   questionContext() {
-    if (currentItemID > 0) {
-      currentID = examineeTokenNotifier.scantronListModel[currentItemID].id;
-      currentQuestionType = examineeTokenNotifier.scantronListModel[currentItemID].questionType;
-      currentQuestionTitle = examineeTokenNotifier.scantronListModel[currentItemID].questionTitle;
-      currentScore = examineeTokenNotifier.scantronListModel[currentItemID].score;
-      currentHeadlineContent = examineeTokenNotifier.scantronListModel[currentItemID].headlineContent;
-      currentDescription = examineeTokenNotifier.scantronListModel[currentItemID].description;
-      currentAttachment = examineeTokenNotifier.scantronListModel[currentItemID].attachment;
-      setState(() {
-        showQuestion(currentQuestionType);
-      });
-    }
+    setState(() {
+      int id = examineeTokenNotifier.scantronListModel[currentItemID].id;
+      int questionType = examineeTokenNotifier.scantronListModel[currentItemID].questionType;
+      String questionTitle = examineeTokenNotifier.scantronListModel[currentItemID].questionTitle;
+      double score = examineeTokenNotifier.scantronListModel[currentItemID].score;
+      String headlineContent = examineeTokenNotifier.scantronListModel[currentItemID].headlineContent;
+      String description = examineeTokenNotifier.scantronListModel[currentItemID].description;
+      String attachment = examineeTokenNotifier.scantronListModel[currentItemID].attachment;
+      currentID = id;
+      currentQuestionType = questionType > 0 ? questionType : 0;
+      currentQuestionTitle = questionTitle.isEmpty || questionTitle == 'none' ? headlineContent : questionTitle;
+      currentScore = score > 0 ? score : 0;
+      currentDescription = description.isEmpty || description == 'none' ? '' : description;
+      currentAttachment = attachment.isEmpty || attachment == 'none' ? '' : attachment;
+      showQuestion(currentQuestionType);
+    });
   }
 
   Widget mainWidget(BuildContext context) {
@@ -390,17 +413,26 @@ class TestPaperState extends State<TestPaper> {
                   Expanded(
                     child: Container(
                       decoration: ShapeDecoration(shape: Border.all(width: 0, color: Colors.transparent)),
-                      padding: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.all(45),
                       margin: const EdgeInsets.all(0),
                       child: Column(
                         children: [
+                          Visibility(
+                            visible: titleShow,
+                            child: Headline(
+                              id: currentID,
+                              questionTitle: currentQuestionTitle,
+                              score: currentScore,
+                              description: currentDescription,
+                              attachment: currentAttachment,
+                            ),
+                          ),
                           Visibility(
                             visible: multipleChoiceShow,
                             child: MultipleChoice(
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -411,7 +443,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -422,7 +453,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -433,7 +463,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -444,7 +473,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -455,7 +483,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -466,7 +493,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
@@ -477,7 +503,6 @@ class TestPaperState extends State<TestPaper> {
                               id: currentID,
                               questionTitle: currentQuestionTitle,
                               score: currentScore,
-                              headlineContent: currentHeadlineContent,
                               description: currentDescription,
                               attachment: currentAttachment,
                             ),
