@@ -35,6 +35,11 @@ class Lang {
   String exit = '';
   String previous = '';
   String next = '';
+  String describe = '';
+  String attachments = '';
+  String details = '';
+  String noData = '';
+  String operationFailed = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -71,6 +76,11 @@ class Lang {
       this.exit = '退出';
       this.previous = '上一个';
       this.next = '下一个';
+      this.describe = '描述';
+      this.attachments = '附件';
+      this.details = '详细信息';
+      this.noData = '无数据';
+      this.operationFailed = '操作失败';
     } else {
       this.none = '';
       this.title = title;
@@ -104,6 +114,11 @@ class Lang {
       this.exit = 'Exit';
       this.previous = 'Previous';
       this.next = 'Next';
+      this.describe = 'Describe';
+      this.attachments = 'Attachments';
+      this.details = 'Details';
+      this.noData = 'No Data';
+      this.operationFailed = 'Operation Failed';
     }
   }
 }

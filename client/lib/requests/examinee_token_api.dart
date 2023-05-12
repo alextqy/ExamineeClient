@@ -62,6 +62,21 @@ class ExamineeTokenApi extends ResponseHelper {
     return DataModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
   }
 
+  Future<DataModel> examScantronSolutionViewAttachments({
+    String filePath = '',
+  }) async {
+    Response response = await post(
+      Uri.http(url, '/Exam/Scantron/Solution/View/Attachments'),
+      body: {
+        'Token': FileHelper().readFile('token'),
+        'FilePath': filePath,
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    );
+    return DataModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
+
   Future<DataModel> examAnswer({
     int scantronID = 0,
     int id = 0,

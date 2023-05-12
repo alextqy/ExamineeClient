@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:client/public/lang.dart';
 
 RawScrollbar scrollbarWidget(dynamic widgets) {
   ScrollController controllerOutside = ScrollController();
@@ -40,12 +41,12 @@ class TimerHandlerState extends State<TimerHandler> {
 
   /// 数字格式化 将0~9转换为00~09
   String formatTime(int timeNum) {
-    return timeNum < 10 ? "0$timeNum" : timeNum.toString();
+    return timeNum < 10 ? '0$timeNum' : timeNum.toString();
   }
 
   /// 时间格式化 hh:mm:ss
   String constructTime(int s) {
-    return "${formatTime(s ~/ 3600)}:${formatTime(s % 3600 ~/ 60)}:${formatTime(s % 60)}";
+    return '${formatTime(s ~/ 3600)}:${formatTime(s % 3600 ~/ 60)}:${formatTime(s % 60)}';
   }
 
   void run() {
@@ -90,4 +91,29 @@ class TimerHandlerState extends State<TimerHandler> {
       child: Text(constructTime(widget.seconds), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
     );
   }
+}
+
+alertDialog(BuildContext context, {required Widget widget, double w = 100, double h = 100}) {
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, Function state) {
+          return AlertDialog(
+            title: Text(Lang().title),
+            content: SizedBox(width: w, height: h, child: widget),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(Lang().cancel),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
 }
