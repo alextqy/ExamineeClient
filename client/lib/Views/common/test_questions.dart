@@ -4,7 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:client/models/scantron_solution_model.dart';
-import 'package:client/providers/base_notifier.dart';
+// import 'package:client/providers/base_notifier.dart';
 import 'package:client/providers/examinee_token_notifier.dart';
 import 'package:client/Views/common/basic_info.dart';
 import 'package:client/Views/common/show_alert_dialog.dart';
@@ -179,9 +179,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
                               context,
                               w: 800,
                               h: 400,
-                              widget: scrollbarWidget(
-                                Image.memory(Tools().byteListToBytes(Tools().toByteList(value.data))),
-                              ),
+                              widget: scrollbarWidget(Image.memory(Tools().byteListToBytes(Tools().toByteList(value.data)))),
                             );
                           });
                         }
@@ -202,7 +200,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
   void initState() {
     super.initState();
     fetchData();
-    questionTitleController.text = widget.questionTitle;
+    questionTitleController.text = '(${widget.score} ${Lang().points})${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
   }
 

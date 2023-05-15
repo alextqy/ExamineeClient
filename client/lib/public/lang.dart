@@ -40,6 +40,7 @@ class Lang {
   String details = '';
   String noData = '';
   String operationFailed = '';
+  String points = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -81,6 +82,7 @@ class Lang {
       this.details = '详细信息';
       this.noData = '无数据';
       this.operationFailed = '操作失败';
+      this.points = '分';
     } else {
       this.none = '';
       this.title = title;
@@ -119,6 +121,7 @@ class Lang {
       this.details = 'Details';
       this.noData = 'No Data';
       this.operationFailed = 'Operation Failed';
+      this.points = 'Points';
     }
   }
 }
