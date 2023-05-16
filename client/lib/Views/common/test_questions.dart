@@ -99,7 +99,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
   List<Widget> generateList() {
     List<Widget> optionList = [];
     if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
-      for (var element in examineeTokenNotifier.scantronSolutionListModel) {
+      for (ScantronSolutionModel element in examineeTokenNotifier.scantronSolutionListModel) {
         optionList.add(
           Container(
             margin: const EdgeInsets.all(0),
@@ -337,7 +337,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
   List<Widget> generateList() {
     List<Widget> optionList = [];
     if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
-      for (var element in examineeTokenNotifier.scantronSolutionListModel) {
+      for (ScantronSolutionModel element in examineeTokenNotifier.scantronSolutionListModel) {
         optionList.add(
           Container(
             margin: const EdgeInsets.all(0),
@@ -559,7 +559,6 @@ class MultipleSelection extends StatefulWidget {
 
 class MultipleSelectionState extends State<MultipleSelection> {
   ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
-  int currentOptionID = 0;
   TextEditingController optionController = TextEditingController();
   TextEditingController questionTitleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -575,14 +574,14 @@ class MultipleSelectionState extends State<MultipleSelection> {
   List<Widget> generateList() {
     List<Widget> optionList = [];
     if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
-      for (var element in examineeTokenNotifier.scantronSolutionListModel) {
+      for (ScantronSolutionModel element in examineeTokenNotifier.scantronSolutionListModel) {
         optionList.add(
           Container(
             margin: const EdgeInsets.all(0),
             padding: const EdgeInsets.all(5),
             child: Row(
               children: [
-                Icon(currentOptionID == element.id || element.candidateAnswer == 'True' ? Icons.radio_button_checked_outlined : Icons.radio_button_unchecked_outlined, size: 15, color: Colors.black),
+                Icon(element.candidateAnswer == 'True' ? Icons.check : Icons.check_box_outline_blank_outlined, size: 15, color: Colors.black),
                 const SizedBox(width: 10),
                 InkWell(
                   child: SizedBox(
@@ -595,9 +594,12 @@ class MultipleSelectionState extends State<MultipleSelection> {
                     ),
                   ),
                   onTap: () {
-                    examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: '').then((value) {
+                    String answerCheck = 'check';
+                    if (element.candidateAnswer == 'True') {
+                      answerCheck = '';
+                    }
+                    examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: answerCheck).then((value) {
                       setState(() {
-                        currentOptionID == element.id;
                         fetchData();
                       });
                     });
