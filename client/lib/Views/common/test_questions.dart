@@ -121,8 +121,12 @@ class MultipleChoiceState extends State<MultipleChoice> {
                   onTap: () {
                     examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: '').then((value) {
                       setState(() {
-                        currentOptionID == element.id;
-                        fetchData();
+                        if (value.state == true) {
+                          currentOptionID == element.id;
+                          fetchData();
+                        } else {
+                          showSnackBar(context, content: Lang().operationFailed);
+                        }
                       });
                     });
                   },
@@ -359,8 +363,12 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
                   onTap: () {
                     examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: '').then((value) {
                       setState(() {
-                        currentOptionID == element.id;
-                        fetchData();
+                        if (value.state == true) {
+                          currentOptionID == element.id;
+                          fetchData();
+                        } else {
+                          showSnackBar(context, content: Lang().operationFailed);
+                        }
                       });
                     });
                   },
@@ -600,7 +608,11 @@ class MultipleSelectionState extends State<MultipleSelection> {
                     }
                     examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: answerCheck).then((value) {
                       setState(() {
-                        fetchData();
+                        if (value.state == true) {
+                          fetchData();
+                        } else {
+                          showSnackBar(context, content: Lang().operationFailed);
+                        }
                       });
                     });
                   },
@@ -782,7 +794,6 @@ class FillInTheBlanks extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-
   String description;
   String attachment;
   FillInTheBlanks({
@@ -799,9 +810,72 @@ class FillInTheBlanks extends StatefulWidget {
 }
 
 class FillInTheBlanksState extends State<FillInTheBlanks> {
+  ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+  TextEditingController questionTitleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  void fetchData() {
+    examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
+    });
+  }
+
+  List<Widget> generateList() {
+    List<Widget> optionList = [];
+    if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+      for (ScantronSolutionModel element in examineeTokenNotifier.scantronSolutionListModel) {
+        TextEditingController inputController = TextEditingController();
+        inputController.text = element.candidateAnswer;
+        optionList.add(
+          Container(
+            margin: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(5),
+            child: TextField(
+              controller: inputController,
+              style: const TextStyle(color: Colors.black, fontSize: 20),
+              cursorColor: Colors.black,
+              decoration: InputDecoration(
+                hintText: Lang().inputContent,
+                hintStyle: const TextStyle(color: Colors.grey),
+                hintMaxLines: 1,
+                enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                suffixIcon: Tooltip(
+                  message: Lang().submit,
+                  decoration: const BoxDecoration(color: Colors.transparent),
+                  textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                  child: IconButton(
+                    iconSize: 20,
+                    icon: const Icon(Icons.send_sharp, color: Colors.black, size: 20),
+                    onPressed: () {
+                      if (inputController.text.isNotEmpty && inputController.text != element.candidateAnswer) {
+                        examineeTokenNotifier.examAnswer(scantronID: widget.id, id: element.id, answer: inputController.text).then((value) {
+                          if (value.state == true) {
+                            showSnackBar(context, content: Lang().operationComplete);
+                          } else {
+                            showSnackBar(context, content: Lang().operationFailed);
+                          }
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+    }
+    return optionList;
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchData();
+    questionTitleController.text = '${widget.questionTitle.replaceAll('<->', ' [ ] ')}.';
   }
 
   @override
@@ -813,7 +887,81 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
-      child: const Center(child: Text('FillInTheBlanks', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+      child: Column(
+        children: [
+          Center(
+            child: SizedBox(
+              height: 80,
+              width: 1350,
+              child: TextField(
+                controller: questionTitleController,
+                maxLines: null,
+                readOnly: true,
+                decoration: const InputDecoration(border: InputBorder.none),
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 1350,
+            child: Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  child: Text(Lang().attachments),
+                  onPressed: () {
+                    examineeTokenNotifier.examScantronSolutionViewAttachments(filePath: widget.attachment).then((value) {
+                      if (value.data == null) {
+                        showSnackBar(context, content: Lang().noData);
+                      } else {
+                        setState(() {
+                          alertDialog(
+                            context,
+                            w: 800,
+                            h: 400,
+                            widget: scrollbarWidget(
+                              Image.memory(Tools().byteListToBytes(Tools().toByteList(value.data))),
+                            ),
+                          );
+                        });
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Center(
+            child: SizedBox(
+              height: 60,
+              width: 1350,
+              child: TextField(
+                controller: descriptionController,
+                maxLines: null,
+                readOnly: true,
+                decoration: const InputDecoration(border: InputBorder.none),
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Center(
+            child: SizedBox(
+              height: 260,
+              width: 500,
+              child: ListView(
+                children: generateList(),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -41,6 +41,9 @@ class Lang {
   String noData = '';
   String operationFailed = '';
   String points = '';
+  String inputContent = '';
+  String submit = '';
+  String operationComplete = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -83,6 +86,9 @@ class Lang {
       this.noData = '无数据';
       this.operationFailed = '操作失败';
       this.points = '分';
+      this.inputContent = '输入内容';
+      this.submit = '提交';
+      this.operationComplete = '操作完成';
     } else {
       this.none = '';
       this.title = title;
@@ -122,6 +128,9 @@ class Lang {
       this.noData = 'No Data';
       this.operationFailed = 'Operation Failed';
       this.points = 'Points';
+      this.inputContent = 'Input Content';
+      this.submit = 'Submit';
+      this.operationComplete = 'Operation Complete';
     }
   }
 }
