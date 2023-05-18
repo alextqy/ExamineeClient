@@ -875,7 +875,8 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
   void initState() {
     super.initState();
     fetchData();
-    questionTitleController.text = '${widget.questionTitle.replaceAll('<->', ' [ ] ')}.';
+    questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle.replaceAll('<->', ' [ ] ')}';
+    descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
   }
 
   @override
@@ -1014,7 +1015,8 @@ class QuizQuestionsState extends State<QuizQuestions> {
   void initState() {
     super.initState();
     fetchData();
-    questionTitleController.text = widget.questionTitle;
+    questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
+    descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
   }
 
   @override
@@ -1096,7 +1098,7 @@ class QuizQuestionsState extends State<QuizQuestions> {
               margin: const EdgeInsets.all(0),
               child: TextField(
                 minLines: 9,
-                maxLines: null,
+                maxLines: 9,
                 controller: inputController,
                 style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
                 cursorColor: Colors.black,
@@ -1153,7 +1155,6 @@ class CodeTesting extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-
   String description;
   String attachment;
   CodeTesting({
