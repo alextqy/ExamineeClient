@@ -266,7 +266,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 60,
@@ -280,7 +280,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 260,
@@ -508,7 +508,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 60,
@@ -522,7 +522,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 260,
@@ -752,7 +752,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 60,
@@ -766,7 +766,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 260,
@@ -936,7 +936,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 60,
@@ -950,7 +950,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 5),
           Center(
             child: SizedBox(
               height: 260,
@@ -978,7 +978,6 @@ class QuizQuestions extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-
   String description;
   String attachment;
   QuizQuestions({
@@ -995,9 +994,27 @@ class QuizQuestions extends StatefulWidget {
 }
 
 class QuizQuestionsState extends State<QuizQuestions> {
+  ExamineeTokenNotifier examineeTokenNotifier = ExamineeTokenNotifier();
+  TextEditingController questionTitleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController inputController = TextEditingController();
+
+  void fetchData() {
+    examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+        if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
+          inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+        }
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchData();
+    questionTitleController.text = widget.questionTitle;
   }
 
   @override
@@ -1009,7 +1026,117 @@ class QuizQuestionsState extends State<QuizQuestions> {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
-      child: const Center(child: Text('QuizQuestions', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))),
+      child: Column(
+        children: [
+          Center(
+            child: SizedBox(
+              height: 80,
+              width: 1350,
+              child: TextField(
+                controller: questionTitleController,
+                maxLines: null,
+                readOnly: true,
+                decoration: const InputDecoration(border: InputBorder.none),
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 1350,
+            child: Row(
+              children: [
+                const Expanded(child: SizedBox()),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                  child: Text(Lang().attachments),
+                  onPressed: () {
+                    examineeTokenNotifier.examScantronSolutionViewAttachments(filePath: widget.attachment).then((value) {
+                      if (value.data == null) {
+                        showSnackBar(context, content: Lang().noData);
+                      } else {
+                        setState(() {
+                          alertDialog(
+                            context,
+                            w: 800,
+                            h: 400,
+                            widget: scrollbarWidget(
+                              Image.memory(Tools().byteListToBytes(Tools().toByteList(value.data))),
+                            ),
+                          );
+                        });
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          Center(
+            child: SizedBox(
+              height: 60,
+              width: 1350,
+              child: TextField(
+                controller: descriptionController,
+                maxLines: null,
+                readOnly: true,
+                decoration: const InputDecoration(border: InputBorder.none),
+                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ),
+          ),
+          const SizedBox(height: 5),
+          Center(
+            child: Container(
+              padding: const EdgeInsets.all(0),
+              margin: const EdgeInsets.all(0),
+              child: TextField(
+                minLines: 9,
+                maxLines: null,
+                controller: inputController,
+                style: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  hintText: Lang().inputContent,
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintMaxLines: 1,
+                  enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                  suffixIcon: Tooltip(
+                    message: Lang().submit,
+                    decoration: const BoxDecoration(color: Colors.transparent),
+                    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                    child: IconButton(
+                      iconSize: 20,
+                      icon: const Icon(Icons.send_sharp, color: Colors.black),
+                      onPressed: () {
+                        if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+                          int id = examineeTokenNotifier.scantronSolutionListModel[0].id;
+                          String candidateAnswer = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+                          if (inputController.text.isNotEmpty && inputController.text != candidateAnswer) {
+                            examineeTokenNotifier.examAnswer(scantronID: widget.id, id: id, answer: inputController.text).then((value) {
+                              if (value.state == true) {
+                                fetchData();
+                                showSnackBar(context, content: Lang().operationComplete);
+                              } else {
+                                showSnackBar(context, content: Lang().operationFailed);
+                              }
+                            });
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
