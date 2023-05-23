@@ -16,6 +16,8 @@ class ScantronModel extends BaseModel {
   late int examID;
   late String headlineContent;
   late int right;
+  late String language;
+  late String languageVersion;
   // late bool selected;
 
   ScantronModel({
@@ -33,6 +35,8 @@ class ScantronModel extends BaseModel {
     this.examID = 0,
     this.headlineContent = '',
     this.right = 0,
+    this.language = '',
+    this.languageVersion = '',
     // this.selected = false,
   }) : super(id, createTime);
 
@@ -52,6 +56,8 @@ class ScantronModel extends BaseModel {
       examID: json['ExamID'],
       headlineContent: json['HeadlineContent'],
       right: json['Right'],
+      language: json['Language'],
+      languageVersion: json['LanguageVersion'],
     );
   }
 

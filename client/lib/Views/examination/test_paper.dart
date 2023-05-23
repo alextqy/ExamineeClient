@@ -48,6 +48,8 @@ class TestPaperState extends State<TestPaper> {
   double currentScore = 0;
   String currentDescription = '';
   String currentAttachment = '';
+  String currentLanguage = '';
+  String currentLanguageVersion = '';
 
   basicListener() async {
     if (examineeTokenNotifier.operationStatus.value == OperationStatus.loading) {
@@ -342,12 +344,17 @@ class TestPaperState extends State<TestPaper> {
       String headlineContent = examineeTokenNotifier.scantronListModel[currentItemID].headlineContent;
       String description = examineeTokenNotifier.scantronListModel[currentItemID].description;
       String attachment = examineeTokenNotifier.scantronListModel[currentItemID].attachment;
+      String language = examineeTokenNotifier.scantronListModel[currentItemID].language;
+      String languageVersion = examineeTokenNotifier.scantronListModel[currentItemID].languageVersion;
+
       currentID = id;
       currentQuestionType = questionType > 0 ? questionType : 0;
       currentQuestionTitle = questionTitle.isEmpty || questionTitle == 'none' ? headlineContent : questionTitle;
       currentScore = score > 0 ? score : 0;
       currentDescription = description.isEmpty || description == 'none' ? '' : description;
       currentAttachment = attachment.isEmpty || attachment == 'none' ? '' : attachment;
+      currentLanguage = language.isEmpty || language == 'none' ? '' : language;
+      currentLanguageVersion = languageVersion.isEmpty || languageVersion == 'none' ? '' : languageVersion;
       showQuestion(currentQuestionType);
     });
   }
@@ -485,6 +492,8 @@ class TestPaperState extends State<TestPaper> {
                               score: currentScore,
                               description: currentDescription,
                               attachment: currentAttachment,
+                              language: currentLanguage,
+                              languageVersion: currentLanguageVersion,
                             ),
                           ),
                           Visibility(

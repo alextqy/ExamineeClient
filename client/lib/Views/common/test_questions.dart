@@ -1157,6 +1157,8 @@ class CodeTesting extends StatefulWidget {
   double score;
   String description;
   String attachment;
+  String language;
+  String languageVersion;
   CodeTesting({
     super.key,
     required this.id,
@@ -1164,6 +1166,8 @@ class CodeTesting extends StatefulWidget {
     required this.score,
     required this.description,
     required this.attachment,
+    required this.language,
+    required this.languageVersion,
   });
 
   @override
@@ -1182,6 +1186,8 @@ class CodeTestingState extends State<CodeTesting> {
   }
 
   Widget mainWidget(BuildContext context) {
+    print(widget.language);
+    print(widget.languageVersion);
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
