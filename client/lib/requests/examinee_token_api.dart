@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:client/public/file.dart';
+import 'package:client/public/tools.dart';
 import 'package:client/requests/base.dart';
 import 'package:client/models/data.dart';
 
@@ -101,6 +102,26 @@ class ExamineeTokenApi extends ResponseHelper {
       Uri.http(url, '/End/The/Exam'),
       body: {
         'Token': FileHelper().readFile('token'),
+      },
+      headers: postHeaders,
+      encoding: postEncoding,
+    );
+    return DataModel.fromJson(jsonDecode(decoder.convert(response.bodyBytes)));
+  }
+
+  Future<DataModel> codeExecTest({
+    String language = '',
+    String version = '',
+    String codeStr = '',
+  }) async {
+    Response response = await post(
+      Uri.http(url, '/Code/Exec/Test'),
+      body: {
+        'Key': 'TXNGG3KidItKrCGf5wXT53eZTYCOynOAIjbKJPdy',
+        'Language': language,
+        'Version': version,
+        'CodeStr': codeStr,
+        'RandomStr': Tools().genMD5(FileHelper().readFile('token')),
       },
       headers: postHeaders,
       encoding: postEncoding,

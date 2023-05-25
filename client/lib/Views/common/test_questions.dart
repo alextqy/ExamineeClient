@@ -1184,22 +1184,22 @@ class CodeTestingState extends State<CodeTesting> {
   TextEditingController questionTitleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController inputController = TextEditingController();
+  bool testStatus = true;
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-        if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
-          inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-        }
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+        inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+      } else {
+        inputController.text = '';
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -1354,6 +1354,7 @@ class CodeTestingState extends State<CodeTesting> {
   }
 
   Widget mainWidget(BuildContext context) {
+    fetchData();
     setState(() {});
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
@@ -1451,8 +1452,17 @@ class CodeTestingState extends State<CodeTesting> {
                           iconSize: 20,
                           icon: const Icon(Icons.title_outlined, color: Colors.black),
                           onPressed: () {
-                            print(widget.language);
-                            print(inputController.text);
+                            if (testStatus == true && inputController.text.isNotEmpty) {
+                              testStatus = false;
+                              examineeTokenNotifier.codeExecTest(language: widget.language, version: widget.languageVersion, codeStr: inputController.text).then((value) {
+                                if (value.state == true) {
+                                  showSnackBar(context, content: value.data);
+                                } else {
+                                  showSnackBar(context, content: value.memo);
+                                }
+                                testStatus = true;
+                              });
+                            }
                           },
                         ),
                       ),
@@ -1468,16 +1478,16 @@ class CodeTestingState extends State<CodeTesting> {
                             if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
                               int id = examineeTokenNotifier.scantronSolutionListModel[0].id;
                               String candidateAnswer = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-                              // if (inputController.text.isNotEmpty && inputController.text != candidateAnswer) {
-                              //   examineeTokenNotifier.examAnswer(scantronID: widget.id, id: id, answer: inputController.text).then((value) {
-                              //     if (value.state == true) {
-                              //       fetchData();
-                              //       showSnackBar(context, content: Lang().operationComplete);
-                              //     } else {
-                              //       showSnackBar(context, content: Lang().operationFailed);
-                              //     }
-                              //   });
-                              // }
+                              if (inputController.text.isNotEmpty && inputController.text != candidateAnswer) {
+                                examineeTokenNotifier.examAnswer(scantronID: widget.id, id: id, answer: inputController.text).then((value) {
+                                  if (value.state == true) {
+                                    fetchData();
+                                    showSnackBar(context, content: Lang().operationComplete);
+                                  } else {
+                                    showSnackBar(context, content: Lang().operationFailed);
+                                  }
+                                });
+                              }
                             }
                           },
                         ),

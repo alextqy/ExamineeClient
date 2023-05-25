@@ -63,4 +63,16 @@ class ExamineeTokenNotifier extends BaseNotifier {
       notifyListeners();
     }
   }
+
+  Future<DataModel> codeExecTest({
+    required String language,
+    required String version,
+    required String codeStr,
+  }) async {
+    return await examineeTokenApi.codeExecTest(
+      language: language,
+      version: version,
+      codeStr: codeStr,
+    );
+  }
 }
