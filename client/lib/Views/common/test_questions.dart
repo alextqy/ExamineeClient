@@ -1231,9 +1231,8 @@ class CodeTestingState extends State<CodeTesting> {
     }
 
     setState(() {});
-    return Container(
-      padding: const EdgeInsets.all(0),
-      margin: const EdgeInsets.all(0),
+    return SizedBox(
+      width: 1350,
       child: Column(
         children: [
           Visibility(
@@ -1304,9 +1303,8 @@ class CodeTestingState extends State<CodeTesting> {
     }
 
     setState(() {});
-    return Container(
-      padding: const EdgeInsets.all(0),
-      margin: const EdgeInsets.all(0),
+    return SizedBox(
+      width: 1350,
       child: Column(
         children: [
           Visibility(
@@ -1509,7 +1507,6 @@ class Drag extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-
   String description;
   String attachment;
   Drag({
