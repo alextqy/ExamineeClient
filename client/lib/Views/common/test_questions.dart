@@ -1207,6 +1207,154 @@ class CodeTestingState extends State<CodeTesting> {
     super.dispose();
   }
 
+  Widget langFunctionContentHeader() {
+    bool cLangShow = false;
+    bool javaLangShow = false;
+    bool jsLangShow = false;
+    bool phpLangShow = false;
+    bool pyLangShow = false;
+
+    if (widget.language == 'c') {
+      cLangShow = true;
+    }
+    if (widget.language == 'java') {
+      javaLangShow = true;
+    }
+    if (widget.language == 'javascript') {
+      jsLangShow = true;
+    }
+    if (widget.language == 'php') {
+      phpLangShow = true;
+    }
+    if (widget.language == 'python') {
+      pyLangShow = true;
+    }
+
+    setState(() {});
+    return Container(
+      padding: const EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
+      child: Column(
+        children: [
+          Visibility(
+            visible: cLangShow,
+            child: const Column(children: [Text('')]),
+          ),
+          Visibility(
+            visible: javaLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('public static String func() {', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))])
+              ],
+            ),
+          ),
+          Visibility(
+            visible: jsLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('function main() {', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('    try {', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: phpLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('function Run(){', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('    try {', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: pyLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('def Run():', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('    try:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget langFunctionContentFooter() {
+    bool cLangShow = false;
+    bool javaLangShow = false;
+    bool jsLangShow = false;
+    bool phpLangShow = false;
+    bool pyLangShow = false;
+
+    if (widget.language == 'c') {
+      cLangShow = true;
+    }
+    if (widget.language == 'java') {
+      javaLangShow = true;
+    }
+    if (widget.language == 'javascript') {
+      jsLangShow = true;
+    }
+    if (widget.language == 'php') {
+      phpLangShow = true;
+    }
+    if (widget.language == 'python') {
+      pyLangShow = true;
+    }
+
+    setState(() {});
+    return Container(
+      padding: const EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
+      child: Column(
+        children: [
+          Visibility(
+            visible: cLangShow,
+            child: const Column(children: [Text('')]),
+          ),
+          Visibility(
+            visible: javaLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('}', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: jsLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('    }', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('}', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: phpLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('    } catch (Exception \$e) {', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('        return \$e->getMessage();', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('    }', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('}', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: pyLangShow,
+            child: const Column(
+              children: [
+                Row(children: [Text('    except Exception as e:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+                Row(children: [Text('        return format(e)', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold))]),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget mainWidget(BuildContext context) {
     setState(() {});
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
@@ -1263,10 +1411,9 @@ class CodeTestingState extends State<CodeTesting> {
               ],
             ),
           ),
-          const SizedBox(height: 5),
           Center(
             child: SizedBox(
-              height: 60,
+              height: 45,
               width: 1350,
               child: TextField(
                 controller: descriptionController,
@@ -1277,8 +1424,10 @@ class CodeTestingState extends State<CodeTesting> {
               ),
             ),
           ),
-          const SizedBox(height: 5),
-          Center(
+          langFunctionContentHeader(),
+          SizedBox(
+            height: 120,
+            width: 1350,
             child: Container(
               padding: const EdgeInsets.all(0),
               margin: const EdgeInsets.all(0),
@@ -1292,37 +1441,56 @@ class CodeTestingState extends State<CodeTesting> {
                   hintText: Lang().inputContent,
                   hintStyle: const TextStyle(color: Colors.grey),
                   hintMaxLines: 1,
-                  enabledBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
-                  focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-                  suffixIcon: Tooltip(
-                    message: Lang().submit,
-                    decoration: const BoxDecoration(color: Colors.transparent),
-                    textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                    child: IconButton(
-                      iconSize: 20,
-                      icon: const Icon(Icons.send_sharp, color: Colors.black),
-                      onPressed: () {
-                        if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
-                          int id = examineeTokenNotifier.scantronSolutionListModel[0].id;
-                          String candidateAnswer = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-                          if (inputController.text.isNotEmpty && inputController.text != candidateAnswer) {
-                            examineeTokenNotifier.examAnswer(scantronID: widget.id, id: id, answer: inputController.text).then((value) {
-                              if (value.state == true) {
-                                fetchData();
-                                showSnackBar(context, content: Lang().operationComplete);
-                              } else {
-                                showSnackBar(context, content: Lang().operationFailed);
-                              }
-                            });
-                          }
-                        }
-                      },
-                    ),
+                  enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                  focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+                  suffixIcon: Column(
+                    children: [
+                      Tooltip(
+                        message: Lang().test,
+                        decoration: const BoxDecoration(color: Colors.transparent),
+                        textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                        child: IconButton(
+                          iconSize: 20,
+                          icon: const Icon(Icons.title_outlined, color: Colors.black),
+                          onPressed: () {
+                            print(widget.language);
+                            print(inputController.text);
+                          },
+                        ),
+                      ),
+                      const Expanded(child: SizedBox()),
+                      Tooltip(
+                        message: Lang().submit,
+                        decoration: const BoxDecoration(color: Colors.transparent),
+                        textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                        child: IconButton(
+                          iconSize: 20,
+                          icon: const Icon(Icons.send_sharp, color: Colors.black),
+                          onPressed: () {
+                            if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+                              int id = examineeTokenNotifier.scantronSolutionListModel[0].id;
+                              String candidateAnswer = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+                              // if (inputController.text.isNotEmpty && inputController.text != candidateAnswer) {
+                              //   examineeTokenNotifier.examAnswer(scantronID: widget.id, id: id, answer: inputController.text).then((value) {
+                              //     if (value.state == true) {
+                              //       fetchData();
+                              //       showSnackBar(context, content: Lang().operationComplete);
+                              //     } else {
+                              //       showSnackBar(context, content: Lang().operationFailed);
+                              //     }
+                              //   });
+                              // }
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
+          langFunctionContentFooter()
         ],
       ),
     );

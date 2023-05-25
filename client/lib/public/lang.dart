@@ -44,6 +44,7 @@ class Lang {
   String inputContent = '';
   String submit = '';
   String operationComplete = '';
+  String test = '';
 
   Lang({this.title = 'Bit Exam'}) {
     this.type = FileHelper().jsonRead(key: 'lang', filePath: 'config.json');
@@ -89,6 +90,7 @@ class Lang {
       this.inputContent = '输入内容';
       this.submit = '提交';
       this.operationComplete = '操作完成';
+      this.test = '测试';
     } else {
       this.none = '';
       this.title = title;
@@ -131,6 +133,7 @@ class Lang {
       this.inputContent = 'Input Content';
       this.submit = 'Submit';
       this.operationComplete = 'Operation Complete';
+      this.test = 'Test';
     }
   }
 }
