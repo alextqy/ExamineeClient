@@ -359,6 +359,7 @@ class TestPaperState extends State<TestPaper> {
     });
   }
 
+  // 试题控件
   Widget checkQuestionWidget() {
     if (titleShow == true) {
       return Headline(
@@ -502,11 +503,7 @@ class TestPaperState extends State<TestPaper> {
                       decoration: ShapeDecoration(shape: Border.all(width: 0, color: Colors.transparent)),
                       padding: const EdgeInsets.all(45),
                       margin: const EdgeInsets.all(0),
-                      child: Container(
-                        padding: const EdgeInsets.all(0),
-                        margin: const EdgeInsets.all(0),
-                        child: checkQuestionWidget(),
-                      ),
+                      child: checkQuestionWidget(),
                     ),
                   ),
                   Tooltip(
