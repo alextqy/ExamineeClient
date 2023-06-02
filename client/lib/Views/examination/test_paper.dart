@@ -361,114 +361,78 @@ class TestPaperState extends State<TestPaper> {
 
   Widget checkQuestionWidget() {
     if (titleShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: Headline(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return Headline(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (multipleChoiceShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: MultipleChoice(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return MultipleChoice(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (judgmentQuestionsShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: JudgmentQuestions(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return JudgmentQuestions(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (multipleSelectionShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: MultipleSelection(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return MultipleSelection(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (fillInTheBlanksShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: FillInTheBlanks(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return FillInTheBlanks(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (quizQuestionsShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: QuizQuestions(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return QuizQuestions(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (codeTestingShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: CodeTesting(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-          language: currentLanguage,
-          languageVersion: currentLanguageVersion,
-        ),
+      return CodeTesting(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
+        language: currentLanguage,
+        languageVersion: currentLanguageVersion,
       );
     } else if (dragShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: Drag(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return Drag(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else if (connectionShow == true) {
-      return Container(
-        padding: const EdgeInsets.all(0),
-        margin: const EdgeInsets.all(0),
-        child: Connection(
-          id: currentID,
-          questionTitle: currentQuestionTitle,
-          score: currentScore,
-          description: currentDescription,
-          attachment: currentAttachment,
-        ),
+      return Connection(
+        id: currentID,
+        questionTitle: currentQuestionTitle,
+        score: currentScore,
+        description: currentDescription,
+        attachment: currentAttachment,
       );
     } else {
       return Container();
@@ -538,7 +502,11 @@ class TestPaperState extends State<TestPaper> {
                       decoration: ShapeDecoration(shape: Border.all(width: 0, color: Colors.transparent)),
                       padding: const EdgeInsets.all(45),
                       margin: const EdgeInsets.all(0),
-                      child: checkQuestionWidget(),
+                      child: Container(
+                        padding: const EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
+                        child: checkQuestionWidget(),
+                      ),
                     ),
                   ),
                   Tooltip(
