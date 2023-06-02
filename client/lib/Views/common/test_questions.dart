@@ -18,7 +18,6 @@ class Headline extends StatefulWidget {
   int id;
   String questionTitle;
   double score;
-
   String description;
   String attachment;
   Headline({
@@ -35,6 +34,8 @@ class Headline extends StatefulWidget {
 }
 
 class HeadlineState extends State<Headline> {
+  TextEditingController questionTitleController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -46,10 +47,23 @@ class HeadlineState extends State<Headline> {
   }
 
   Widget mainWidget(BuildContext context) {
+    questionTitleController.text = widget.questionTitle;
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
-      child: Center(child: Text(widget.questionTitle, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20))),
+      child: Center(
+        child: SizedBox(
+          height: 80,
+          width: 1350,
+          child: TextField(
+            controller: questionTitleController,
+            maxLines: null,
+            readOnly: true,
+            decoration: const InputDecoration(border: InputBorder.none),
+            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+        ),
+      ),
     );
   }
 
@@ -90,9 +104,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
     });
   }
 
@@ -203,7 +215,6 @@ class MultipleChoiceState extends State<MultipleChoice> {
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -212,7 +223,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
   }
 
   Widget mainWidget(BuildContext context) {
-    setState(() {});
+    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -333,9 +344,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
     });
   }
 
@@ -446,7 +455,6 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -455,7 +463,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
   }
 
   Widget mainWidget(BuildContext context) {
-    setState(() {});
+    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -575,9 +583,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
     });
   }
 
@@ -691,7 +697,6 @@ class MultipleSelectionState extends State<MultipleSelection> {
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -700,7 +705,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
   }
 
   Widget mainWidget(BuildContext context) {
-    setState(() {});
+    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -819,9 +824,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
     });
   }
 
@@ -877,7 +880,6 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -886,7 +888,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
   }
 
   Widget mainWidget(BuildContext context) {
-    setState(() {});
+    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle.replaceAll('<->', ' [ ] ')}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -1006,19 +1008,18 @@ class QuizQuestionsState extends State<QuizQuestions> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      setState(() {
-        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-        if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
-          inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-        }
-      });
+      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
+        inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+      } else {
+        inputController.text = '';
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    fetchData();
   }
 
   @override
@@ -1027,7 +1028,7 @@ class QuizQuestionsState extends State<QuizQuestions> {
   }
 
   Widget mainWidget(BuildContext context) {
-    setState(() {});
+    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -1230,7 +1231,6 @@ class CodeTestingState extends State<CodeTesting> {
       pyLangShow = true;
     }
 
-    setState(() {});
     return SizedBox(
       width: 1350,
       child: Column(
@@ -1302,7 +1302,6 @@ class CodeTestingState extends State<CodeTesting> {
       pyLangShow = true;
     }
 
-    setState(() {});
     return SizedBox(
       width: 1350,
       child: Column(
