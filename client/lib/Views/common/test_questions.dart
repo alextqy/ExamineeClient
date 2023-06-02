@@ -106,7 +106,9 @@ class MultipleChoiceState extends State<MultipleChoice> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
     });
   }
 
@@ -216,6 +218,7 @@ class MultipleChoiceState extends State<MultipleChoice> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -225,7 +228,6 @@ class MultipleChoiceState extends State<MultipleChoice> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -346,7 +348,9 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
     });
   }
 
@@ -456,6 +460,7 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -465,7 +470,6 @@ class JudgmentQuestionsState extends State<JudgmentQuestions> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -585,7 +589,9 @@ class MultipleSelectionState extends State<MultipleSelection> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
     });
   }
 
@@ -698,6 +704,7 @@ class MultipleSelectionState extends State<MultipleSelection> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -707,7 +714,6 @@ class MultipleSelectionState extends State<MultipleSelection> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -826,7 +832,9 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+      });
     });
   }
 
@@ -881,6 +889,7 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -890,7 +899,6 @@ class FillInTheBlanksState extends State<FillInTheBlanks> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle.replaceAll('<->', ' [ ] ')}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -1010,17 +1018,20 @@ class QuizQuestionsState extends State<QuizQuestions> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
-        inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-      } else {
-        inputController.text = '';
-      }
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+        if (examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer.isNotEmpty) {
+          inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+        } else {
+          inputController.text = '';
+        }
+      });
     });
   }
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -1030,7 +1041,6 @@ class QuizQuestionsState extends State<QuizQuestions> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
@@ -1191,17 +1201,20 @@ class CodeTestingState extends State<CodeTesting> {
 
   void fetchData() {
     examineeTokenNotifier.examScantronSolutionInfo(id: widget.id).then((value) {
-      examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
-      if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
-        inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
-      } else {
-        inputController.text = '';
-      }
+      setState(() {
+        examineeTokenNotifier.scantronSolutionListModel = ScantronSolutionModel().fromJsonList(jsonEncode(value.data));
+        if (examineeTokenNotifier.scantronSolutionListModel.isNotEmpty) {
+          inputController.text = examineeTokenNotifier.scantronSolutionListModel[0].candidateAnswer;
+        } else {
+          inputController.text = '';
+        }
+      });
     });
   }
 
   @override
   void initState() {
+    fetchData();
     super.initState();
   }
 
@@ -1355,8 +1368,6 @@ class CodeTestingState extends State<CodeTesting> {
   }
 
   Widget mainWidget(BuildContext context) {
-    fetchData();
-    setState(() {});
     questionTitleController.text = '(${widget.score} ${Lang().points})  ${widget.questionTitle}';
     descriptionController.text = widget.description == '' ? '' : '${Lang().describe}: ${widget.description}';
     return Container(
