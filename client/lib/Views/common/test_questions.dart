@@ -51,18 +51,20 @@ class HeadlineState extends State<Headline> {
     return Container(
       padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(0),
-      child: Center(
-        child: SizedBox(
-          height: 80,
-          width: 1350,
-          child: TextField(
-            controller: questionTitleController,
-            maxLines: null,
-            readOnly: true,
-            decoration: const InputDecoration(border: InputBorder.none),
-            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 80,
+            width: 1350,
+            child: TextField(
+              controller: questionTitleController,
+              maxLines: null,
+              readOnly: true,
+              decoration: const InputDecoration(border: InputBorder.none),
+              style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
